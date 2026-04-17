@@ -10,13 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg sticky-top d-none" id="main-nav">
+    <nav class="navbar navbar-expand-lg sticky-top" id="main-nav">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#">
                 <div class="brand-logo-small me-2">
@@ -25,20 +27,22 @@
                 <span>FinalShop</span>
             </a>
             
-            <div class="d-flex align-items-center">
-                <button class="btn btn-cart position-relative me-3" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="cart-badge">
-                        0
-                    </span>
-                </button>
-                <div class="dropdown">
-                    <button class="btn btn-user dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle"></i> <span id="user-display-name">Utente</span>
+            <div id="nav-elements" class="d-none animate__animated animate__fadeIn">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-cart position-relative me-3" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="cart-badge">
+                            0
+                        </span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                        <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
-                    </ul>
+                    <div class="dropdown">
+                        <button class="btn btn-user dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> <span id="user-display-name">Utente</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

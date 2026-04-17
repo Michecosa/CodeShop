@@ -19,17 +19,18 @@
     const showView = (view) => {
         const authView = document.getElementById('auth-view');
         const shopView = document.getElementById('shop-view');
-        const mainNav = document.getElementById('main-nav');
+        const navElements = document.getElementById('nav-elements');
+        
         if (view === 'shop') {
             authView?.classList.add('d-none');
             shopView?.classList.remove('d-none');
-            mainNav?.classList.remove('d-none');
+            navElements?.classList.remove('d-none');
             initShop();
         }
         else {
             authView?.classList.remove('d-none');
             shopView?.classList.add('d-none');
-            mainNav?.classList.add('d-none');
+            navElements?.classList.add('d-none');
         }
     };
     /**
@@ -101,11 +102,11 @@
             if (response.ok) {
                 currentCart = await response.json();
                 renderCart();
-                showToast('Prodotto aggiunto al carrello!', 'success');
+                showToast('🚀 Prodotto aggiunto!', 'success');
             }
         }
         catch (err) {
-            showToast('Errore nell\'aggiunta al carrello', 'error');
+            showToast('Errore nell\'aggiunta', 'error');
         }
     };
     const removeFromCart = async (productId) => {
@@ -205,15 +206,15 @@
                 if (response.ok) {
                     const token = await response.text();
                     localStorage.setItem('jwt_token', token);
-                    showToast('Accesso effettuato!', 'success');
+                    showToast('🎉 Accesso effettuato!', 'success');
                     showView('shop');
                 }
                 else {
-                    showToast('Credenziali non valide', 'error');
+                    showToast('❌ Credenziali non valide', 'error');
                 }
             }
             catch (err) {
-                showToast('Errore di connessione', 'error');
+                showToast('⚠️ Errore di connessione', 'error');
             }
             finally {
                 if (loader)
@@ -235,15 +236,15 @@
                     body: JSON.stringify({ username, mail, password })
                 });
                 if (response.ok) {
-                    showToast('Registrazione completata!', 'success');
+                    showToast('✅ Registrazione completata!', 'success');
                     window.toggleAuth('login');
                 }
                 else {
-                    showToast('Errore registrazione', 'error');
+                    showToast('❌ Errore registrazione', 'error');
                 }
             }
             catch (err) {
-                showToast('Errore di connessione', 'error');
+                showToast('⚠️ Errore di connessione', 'error');
             }
             finally {
                 if (loader)
@@ -260,6 +261,10 @@
             return;
         const toast = document.createElement('div');
         toast.className = `custom-toast ${type} animate__animated animate__fadeInRight`;
+        toast.style.padding = '16px 24px';
+        toast.style.marginBottom = '12px';
+        toast.style.minWidth = '300px';
+        toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
         toast.innerHTML = `<span>${message}</span>`;
         container.appendChild(toast);
         setTimeout(() => {
