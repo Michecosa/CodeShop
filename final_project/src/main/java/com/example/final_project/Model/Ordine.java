@@ -28,6 +28,7 @@ public class Ordine extends BaseEntity {
 	private String indirizzo;
 
 	@OneToMany(mappedBy = "ordine", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@com.fasterxml.jackson.annotation.JsonIgnore
 	private List<ItemQuantity> items = new ArrayList<>();
 
 	public double getTotale() {

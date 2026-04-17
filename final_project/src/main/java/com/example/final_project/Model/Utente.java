@@ -29,8 +29,10 @@ public class Utente extends BaseEntity {
 	private String roles;// csv "ROLE_ADMIN,ROLE_USER"
 
 	@OneToOne(mappedBy = "utente")
+	@com.fasterxml.jackson.annotation.JsonIgnore
 	private Carrello carrello;
 
 	@OneToMany(mappedBy = "utente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@com.fasterxml.jackson.annotation.JsonIgnore
 	private List<Ordine> ordini = new ArrayList<>();
 }
