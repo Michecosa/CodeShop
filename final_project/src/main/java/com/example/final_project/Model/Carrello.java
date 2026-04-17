@@ -16,7 +16,7 @@ public class Carrello extends BaseEntity {
 	@JoinColumn(name = "id_utente")
 	private Utente utente;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "carrello")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "carrello", orphanRemoval = true)
 	private List<ItemQuantity> items = new ArrayList<>();
 
 	public double getTotale() {
