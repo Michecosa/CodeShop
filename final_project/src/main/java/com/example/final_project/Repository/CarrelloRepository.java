@@ -9,6 +9,6 @@ import com.example.final_project.Model.Carrello;
 public interface CarrelloRepository extends JpaRepository<Carrello, Long> {
     // Metodo che restituisce un carrello prendendo il ingresso lo username
     // dell'utente a cui appartiene
-    Carrello findByUtente_Id(Long idUtente);
+    Carrello findByUtente_Username(String username);
 
 }

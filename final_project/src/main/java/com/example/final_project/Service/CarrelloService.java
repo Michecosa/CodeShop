@@ -23,12 +23,12 @@ public class CarrelloService {
     @Autowired
     ProdottoRepository prodottoRepository;
 
-    public Carrello aggiungiProdotto(Long idUtente, Long idProdotto, int qtn) {
-        Carrello carrello = carrelloRepository.findByUtente_Id(idUtente).orElseGet(() -> {
-            Carrello c = new Carrello();
-            c.setUtente(utenteRepository.findById(idUtente).orElseThrow());
-            return c;
-        });
+    public Carrello aggiungiProdotto(String username, Long idProdotto, int qtn) {
+        Carrello carrello = carrelloRepository.findByUtente_Username(username);
+        if (carrello == null) {
+            carrello = new Carrello();
+            carrello.setUtente(utenteRepository.findByUsername(username));
+        }
 
         ItemQuantity item = carrello.productAlreadyPresent(prodottoRepository.findById(idProdotto).orElseThrow());
         if (item != null) {
@@ -43,8 +43,9 @@ public class CarrelloService {
         return carrelloRepository.save(carrello);
     }
 
-    public Carrello rimuoviProdotto(Long idUtente, Long idProdotto) {
-        Carrello carrello = carrelloRepository.findByUtente_Id(idUtente).orElseThrow();
+    public Carrello rimuoviProdotto(String username, Long idProdotto) {
+        Carrello carrello = carrelloRepository.findByUtente_Username(username);
+        if (carrello == null) throw new RuntimeException("Carrello non trovato");
         ItemQuantity item = carrello.productAlreadyPresent(prodottoRepository.findById(idProdotto).orElseThrow());
         if (item != null) {
             carrello.getItems().remove(item);
@@ -58,13 +59,14 @@ public class CarrelloService {
         return carrello.getItems();
     }
 
-    public Carrello svuotaCarrello(Long idUtente) {
-        Carrello carrello = carrelloRepository.findByUtente_Id(idUtente).orElseThrow();
+    public Carrello svuotaCarrello(String username) {
+        Carrello carrello = carrelloRepository.findByUtente_Username(username);
+        if (carrello == null) throw new RuntimeException("Carrello non trovato");
         carrello.getItems().clear();
         return carrelloRepository.save(carrello);
     }
 
-    public Carrello SalvaCarrello() {
+    public Carrello salvaCarrello() {
         Carrello carrello = new Carrello();
         return carrelloRepository.save(carrello);
     }
