@@ -393,42 +393,42 @@
 
         container.innerHTML = orders.map(order => `
             <div class="col-12 fade-in-up">
-                <div class="card bg-dark border-secondary shadow-sm mb-3">
-                    <div class="card-header border-secondary d-flex justify-content-between align-items-center py-3">
+                <div class="order-card">
+                    <div class="order-card-header">
                         <div>
-                            <span class="text-muted small d-block">ORDINE EFFETTUATO</span>
-                            <span class="fw-bold">${new Date(order.data).toLocaleDateString()}</span>
+                            <span class="order-label">ORDINE EFFETTUATO</span>
+                            <span class="order-value">${new Date(order.data).toLocaleDateString()}</span>
                         </div>
                         <div>
-                            <span class="text-muted small d-block">TOTALE</span>
-                            <span class="fw-bold text-primary">€ ${order.items.reduce((acc, i) => acc + (i.prodotto.prezzo * i.qtn), 0).toFixed(2)}</span>
+                            <span class="order-label">TOTALE</span>
+                            <span class="order-value text-gradient">€ ${order.items.reduce((acc, i) => acc + (i.prodotto.prezzo * i.qtn), 0).toFixed(2)}</span>
                         </div>
                         <div>
-                            <span class="text-muted small d-block">ORDINE #</span>
-                            <span class="fw-bold">${order.id}</span>
+                            <span class="order-label">ORDINE #</span>
+                            <span class="order-value">${order.id}</span>
                         </div>
                         <span class="badge rounded-pill bg-success px-3 py-2">Consegnato</span>
                     </div>
-                    <div class="card-body">
+                    <div class="order-card-body">
                         <div class="row">
                             <div class="col-md-8">
                                 ${order.items.map(item => `
                                     <div class="d-flex align-items-center mb-3">
-                                        <div class="bg-secondary rounded p-2 me-3">
-                                            <i class="fas fa-tag text-white"></i>
+                                        <div class="order-item-icon me-3">
+                                            <i class="fas fa-tag"></i>
                                         </div>
                                         <div>
-                                            <h6 class="mb-0 fw-bold">${item.prodotto.nome}</h6>
-                                            <p class="text-muted small mb-0">Quantità: ${item.qtn} • Prezzo unitario: € ${item.prodotto.prezzo.toFixed(2)}</p>
+                                            <h6 class="mb-0 fw-bold text-white">${item.prodotto.nome}</h6>
+                                            <p class="order-item-meta mb-0">Quantità: ${item.qtn} • Prezzo unitario: € ${item.prodotto.prezzo.toFixed(2)}</p>
                                         </div>
                                     </div>
                                 `).join('')}
                             </div>
-                            <div class="col-md-4 border-start border-secondary py-2">
-                                <h6 class="fw-bold mb-3">Dettagli Consegna</h6>
-                                <p class="text-muted small mb-1"><i class="fas fa-map-marker-alt me-2"></i> ${order.indirizzo}</p>
-                                <p class="text-muted small"><i class="fas fa-truck me-2"></i> Consegna stimata: ${new Date(order.consegna).toLocaleDateString()}</p>
-                                <button class="btn btn-outline-light btn-sm w-100 mt-2 rounded-pill">Traccia pacco</button>
+                            <div class="col-md-4 order-delivery-col py-2">
+                                <h6 class="fw-bold mb-3 text-white">Dettagli Consegna</h6>
+                                <p class="order-item-meta mb-1"><i class="fas fa-map-marker-alt me-2 text-primary"></i> ${order.indirizzo}</p>
+                                <p class="order-item-meta"><i class="fas fa-truck me-2 text-primary"></i> Consegna stimata: ${new Date(order.consegna).toLocaleDateString()}</p>
+                                <button class="btn-track-order w-100 mt-2">Traccia pacco</button>
                             </div>
                         </div>
                     </div>
