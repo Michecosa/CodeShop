@@ -66,6 +66,12 @@ public class CarrelloService {
         return carrelloRepository.save(carrello);
     }
 
+    public Carrello getCarrelloByUsername(String username) {
+        Carrello carrello = carrelloRepository.findByUtente_Username(username);
+        if (carrello == null) throw new RuntimeException("Carrello non trovato");
+        return carrello;
+    }
+
     public Carrello salvaCarrello() {
         Carrello carrello = new Carrello();
         return carrelloRepository.save(carrello);

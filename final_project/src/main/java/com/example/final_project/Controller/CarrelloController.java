@@ -1,53 +1,45 @@
 package com.example.final_project.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.final_project.Model.Carrello;
-import com.example.final_project.Model.ItemQuantity;
-import com.example.final_project.Model.Prodotto;
-import com.example.final_project.Repository.CarrelloRepository;
-import com.example.final_project.Repository.ItemRepository;
-import com.example.final_project.Repository.ProdottoRepository;
+import com.example.final_project.Service.CarrelloService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/carts")
+@RequiredArgsConstructor
 public class CarrelloController {
 
-    @Autowired
-    private CarrelloRepository carrelloRepository;
-    @Autowired
-    private ProdottoRepository prodottoRepository;
-    @Autowired
-    private ItemRepository itemRepository;
+    private final CarrelloService carrelloService;
 
     @GetMapping("/mine")
     public Carrello getMine(Authentication authentication) {
-        return carrelloRepository.findByUtente_Username(authentication.getName());
+        return carrelloService.getCarrelloByUsername(authentication.getName());
     }
 
     @PostMapping("/add/{idProdotto}")
-    public Carrello addProduct(@PathVariable Long idProdotto, Authentication authentication) {
-        Carrello carrello = carrelloRepository.findByUtente_Username(authentication.getName());
-        Prodotto prodotto = prodottoRepository.findById(idProdotto).orElseThrow();
+    public Carrello addProduct(@PathVariable Long idProdotto,
+                               @RequestParam(defaultValue = "1") int qtn,
+                               Authentication authentication) {
+        return carrelloService.aggiungiProdotto(authentication.getName(), idProdotto, qtn);
+    }
 
-        ItemQuantity item = carrello.productAlreadyPresent(prodotto);
-        if (item != null) {
-            item.setQtn(item.getQtn() + 1);
-            itemRepository.save(item);
-        } else {
-            ItemQuantity newItem = new ItemQuantity();
-            newItem.setProdotto(prodotto);
-            newItem.setCarrello(carrello);
-            newItem.setQtn(1);
-            itemRepository.save(newItem);
-        }
+    @DeleteMapping("/remove/{idProdotto}")
+    public Carrello removeProduct(@PathVariable Long idProdotto, Authentication authentication) {
+        return carrelloService.rimuoviProdotto(authentication.getName(), idProdotto);
+    }
 
-        return carrelloRepository.findByUtente_Username(authentication.getName());
+    @DeleteMapping("/clear")
+    public Carrello clearCart(Authentication authentication) {
+        return carrelloService.svuotaCarrello(authentication.getName());
     }
 }

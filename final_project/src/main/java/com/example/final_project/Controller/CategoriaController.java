@@ -11,40 +11,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.final_project.Model.Prodotto;
-import com.example.final_project.Service.ProdottoService;
+import com.example.final_project.Model.Categoria;
+import com.example.final_project.Service.CategoriaService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/categories")
 @RequiredArgsConstructor
-public class ProdottoController {
+public class CategoriaController {
 
-    private final ProdottoService prodottoService;
+    private final CategoriaService categoriaService;
 
     @GetMapping
-    public List<Prodotto> getAll() {
-        return prodottoService.trovaTutti();
+    public List<Categoria> getAll() {
+        return categoriaService.trovaTutte();
     }
 
     @GetMapping("/{id}")
-    public Prodotto getById(@PathVariable Long id) {
-        return prodottoService.trovaPerID(id);
+    public Categoria getById(@PathVariable Long id) {
+        return categoriaService.trovaPerID(id);
     }
 
     @PostMapping
-    public Prodotto create(@RequestBody Prodotto prodotto) {
-        return prodottoService.crea(prodotto);
+    public Categoria create(@RequestBody Categoria categoria) {
+        return categoriaService.crea(categoria);
     }
 
     @PutMapping("/{id}")
-    public Prodotto update(@PathVariable Long id, @RequestBody Prodotto prodotto) {
-        return prodottoService.aggiorna(id, prodotto);
+    public Categoria update(@PathVariable Long id, @RequestBody Categoria categoria) {
+        return categoriaService.aggiorna(id, categoria);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        prodottoService.elimina(id);
+        categoriaService.elimina(id);
     }
 }

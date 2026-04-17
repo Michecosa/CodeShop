@@ -29,7 +29,7 @@ public class ItemController {
 
     // prendiamo un item e la sua quantità tramite id
     @GetMapping("/{id}")
-    public ItemQuantity getItemById(Long id) {
+    public ItemQuantity getItemById(@PathVariable Long id) {
         return itemService.getItemById(id);
     }
 
