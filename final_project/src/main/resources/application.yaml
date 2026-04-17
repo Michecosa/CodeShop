@@ -19,5 +19,5 @@ spring:
 
 # Configurazione JWT (Proprietà Custom)
 jwt:
-  secret: mysupersecretkey1234567890abcdef
+  secret: MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4 # Chiave da 256 bit codificata in Base64
   expiration: 86400000 # 1 giorno in millisecondi
