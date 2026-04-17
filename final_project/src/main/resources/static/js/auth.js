@@ -461,7 +461,7 @@
 
             if (response.ok) {
                 showToast('Ordine creato con successo!', 'success');
-                
+
                 // Close offcanvas if open
                 const cartEl = document.getElementById('cartOffcanvas');
                 const offcanvas = bootstrap.Offcanvas.getInstance(cartEl) || new bootstrap.Offcanvas(cartEl);
@@ -470,6 +470,11 @@
                 // Refresh state
                 await fetchCart();
                 showOrders();
+            } else if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('jwt_token');
+                updateAuthUI();
+                showToast('Sessione scaduta. Effettua di nuovo l\'accesso.', 'error');
+                showAuth('login');
             } else {
                 const errMsg = await response.text();
                 showToast(`Errore: ${errMsg || 'Impossibile completare l\'ordine'}`, 'error');

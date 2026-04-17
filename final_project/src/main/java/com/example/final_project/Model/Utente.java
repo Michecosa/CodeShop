@@ -25,6 +25,7 @@ public class Utente extends BaseEntity {
     @Column(unique = true)
     private String mail;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private String password;
 
     /** Sostituisce il vecchio campo String roles (CSV). */

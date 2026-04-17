@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.final_project.Model.Carrello;
 import com.example.final_project.Model.ItemQuantity;
@@ -54,6 +55,7 @@ public class OrdineService {
     // nel carrello, se l'utente o il carrello non esistono o
     // se il carrello è vuoto lancia un'eccezione, restituisce l'ordine creato con
     // l'ID generato
+    @Transactional
     public Ordine creaOrdine(String username, String indirizzo, LocalDate consegna) {
         Utente utente = utenteRepository.findByUsername(username);
         if (utente == null)
@@ -68,6 +70,7 @@ public class OrdineService {
         ordine.setUtente(utente);
         ordine.setIndirizzo(indirizzo);
         ordine.setConsegna(consegna);
+        ordine.setData(LocalDate.now());
         ordine.setPagato(false);
 
         List<ItemQuantity> items = new ArrayList<>();

@@ -19,6 +19,9 @@ import lombok.*;
 @NoArgsConstructor
 public class Ordine extends BaseEntity {
 
+    @Column(name = "data_ordine")
+    private LocalDate data;
+
     @ManyToOne
     @JoinColumn(name = "id_utente")
     private Utente utente;
