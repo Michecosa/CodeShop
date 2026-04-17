@@ -54,7 +54,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 bg-dark text-white">
                             <li><a class="dropdown-item text-white" href="#"><i class="fas fa-user-circle me-2"></i> Profilo</a></li>
-                            <li><a class="dropdown-item text-white" href="#"><i class="fas fa-history me-2"></i> Ordini</a></li>
+                            <li><a class="dropdown-item text-white" href="#" onclick="showOrders()"><i class="fas fa-history me-2"></i> Ordini</a></li>
                             <li><hr class="dropdown-divider bg-secondary"></li>
                             <li><a class="dropdown-item text-white" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
                         </ul>
@@ -128,6 +128,24 @@
                 </div>
             </div>
         </section>
+
+        <!-- Featured Products Section -->
+        <section class="py-5 bg-dark">
+            <div class="container">
+                <div class="row mb-5 align-items-center">
+                    <div class="col-md-6">
+                        <h2 class="display-6 fw-bold mb-0">Novità in <span class="text-gradient">Vetrina</span></h2>
+                        <p class="text-muted">Gli ultimi arrivi scelti per te</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <button class="btn btn-outline-primary rounded-pill px-4" onclick="showShop()">Vedi Tutti <i class="fas fa-arrow-right ms-2"></i></button>
+                    </div>
+                </div>
+                <div class="row g-4" id="featured-products">
+                    <!-- Dynamic Featured Products -->
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Shop View -->
@@ -147,6 +165,25 @@
         
         <div class="row g-4" id="products-grid">
             <!-- Dynamic Products -->
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders View -->
+    <div id="orders-view" class="container py-5 d-none" style="margin-top: 80px;">
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold">I miei <span class="text-gradient">Ordini</span></h2>
+                <p class="text-muted">Cronologia dei tuoi acquisti su FinalShop</p>
+            </div>
+        </div>
+        
+        <div id="orders-container" class="row g-4">
+            <!-- Dynamic Orders -->
             <div class="col-12 text-center py-5">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -243,9 +280,9 @@
                 </div>
                 <div class="d-flex justify-content-between mb-4 h4">
                     <span class="fw-bold">Totale</span>
-                    <span class="fw-bold text-primary" id="cart-total text-gradient">€ 0.00</span>
+                    <span class="fw-bold text-primary" id="cart-total">€ 0.00</span>
                 </div>
-                <button class="btn-primary-custom w-100 py-3 mb-2" id="checkout-btn" disabled>
+                <button class="btn-primary-custom w-100 py-3 mb-2" id="checkout-btn" onclick="handleCheckout()" disabled>
                     Procedi al Pagamento
                 </button>
                 <button class="btn btn-link text-muted w-100 text-decoration-none" onclick="clearCart()">Svuota carrello</button>

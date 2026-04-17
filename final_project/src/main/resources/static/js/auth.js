@@ -6,6 +6,7 @@
 (() => {
     // State
     let products = [];
+    let orders = [];
     let currentCart = null;
     let searchTimeout = null;
 
@@ -21,7 +22,7 @@
      * View Controllers
      */
     const showView = (viewName) => {
-        const views = ['home-view', 'shop-view', 'auth-view'];
+        const views = ['home-view', 'shop-view', 'auth-view', 'orders-view'];
         views.forEach(v => {
             const el = document.getElementById(v);
             if (el) el.classList.add('d-none');
@@ -45,8 +46,21 @@
         }
     };
 
-    window.showHome = () => showView('home');
+    window.showHome = () => {
+        showView('home');
+        fetchProducts();
+    };
     window.showShop = () => showView('shop');
+    window.showOrders = () => {
+        const token = localStorage.getItem('jwt_token');
+        if (!token) {
+            showToast('Devi accedere per vedere i tuoi ordini', 'info');
+            showAuth('login');
+            return;
+        }
+        showView('orders');
+        fetchOrders();
+    };
     window.showAuth = (mode) => {
         showView('auth');
         window.toggleAuth(mode);
@@ -99,6 +113,7 @@
             if (response.ok) {
                 products = await response.json();
                 renderProducts(query);
+                renderFeaturedProducts();
             }
         } catch (err) {
             showToast('Errore caricamento prodotti', 'error');
@@ -124,19 +139,72 @@
             return;
         }
 
+        const categoryIcon = (categorie) => {
+            if (!categorie || categorie.length === 0) return 'fa-box';
+            const nome = categorie[0].nome.toLowerCase();
+            if (nome.includes('elettronica')) return 'fa-microchip';
+            if (nome.includes('abbigliamento')) return 'fa-tshirt';
+            if (nome.includes('sport')) return 'fa-running';
+            if (nome.includes('casa')) return 'fa-home';
+            if (nome.includes('libri')) return 'fa-book';
+            return 'fa-tag';
+        };
+
         grid.innerHTML = filtered.map(p => `
             <div class="col-md-4 col-lg-3 fade-in-up">
                 <div class="product-card">
                     <div class="product-image-box">
                         <span class="badge-new">NEW</span>
-                        <i class="fas fa-microchip"></i>
+                        <i class="fas ${categoryIcon(p.categorie)}"></i>
                         <div class="price-box">€ ${p.prezzo.toFixed(2)}</div>
                     </div>
                     <div class="product-info">
-                        <div class="product-cat">Tecnologia</div>
+                        <div class="product-cat">${p.categorie && p.categorie.length > 0 ? p.categorie.map(c => c.nome).join(', ') : 'Senza categoria'}</div>
                         <h5 class="product-name" title="${p.nome}">${p.nome}</h5>
                         <button class="btn-add" onclick="handleAddToCart(${p.id})">
                             <i class="fas fa-cart-plus me-2"></i> Aggiungi al carrello
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    };
+
+    const renderFeaturedProducts = () => {
+        const grid = document.getElementById('featured-products');
+        if (!grid) return;
+
+        // Take only first 4 products for featured section
+        const featured = products.slice(0, 4);
+
+        if (featured.length === 0) {
+            grid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">Nessun prodotto disponibile al momento</p></div>';
+            return;
+        }
+
+        const categoryIcon = (categorie) => {
+            if (!categorie || categorie.length === 0) return 'fa-box';
+            const nome = categorie[0].nome.toLowerCase();
+            if (nome.includes('elettronica')) return 'fa-microchip';
+            if (nome.includes('abbigliamento')) return 'fa-tshirt';
+            if (nome.includes('sport')) return 'fa-running';
+            if (nome.includes('casa')) return 'fa-home';
+            return 'fa-tag';
+        };
+
+        grid.innerHTML = featured.map(p => `
+            <div class="col-md-6 col-lg-3 fade-in-up">
+                <div class="product-card">
+                    <div class="product-image-box">
+                        <span class="badge-new">NEW</span>
+                        <i class="fas ${categoryIcon(p.categorie)}"></i>
+                        <div class="price-box">€ ${p.prezzo.toFixed(2)}</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-cat">${p.categorie && p.categorie.length > 0 ? p.categorie[0].nome : 'Senza categoria'}</div>
+                        <h5 class="product-name">${p.nome}</h5>
+                        <button class="btn btn-outline-primary w-100 rounded-pill mt-2" onclick="handleAddToCart(${p.id})">
+                            <i class="fas fa-cart-plus me-2"></i> Aggiungi
                         </button>
                     </div>
                 </div>
@@ -170,20 +238,36 @@
         }
     };
 
-    const addToCart = async (productId) => {
+    const addToCart = async (productId, qtn = 1) => {
         try {
-            const response = await fetch(`/api/carts/add/${productId}?qtn=1`, {
+            const response = await fetch(`/api/carts/add/${productId}?qtn=${qtn}`, {
                 method: 'POST',
                 headers: getAuthHeaders()
             });
             if (response.ok) {
                 currentCart = await response.json();
                 renderCart();
-                showToast('Prodotto aggiunto!', 'success');
+                if (qtn > 0) showToast('Carrello aggiornato!', 'success');
             }
         } catch (err) {
-            showToast('Errore aggiunta carrello', 'error');
+            showToast('Errore aggiornamento carrello', 'error');
         }
+    };
+
+    window.updateItemQuantity = async (productId, delta) => {
+        const item = currentCart.items.find(i => i.prodotto.id === productId);
+        if (!item) return;
+
+        if (item.qtn + delta <= 0) {
+            removeFromCart(productId);
+            return;
+        }
+
+        // We use a modified version of add that supports subtraction if the service allows it
+        // BUT wait, the current service doesn't allow qtn <= 0.
+        // Let's modify the service to be more robust or handle it here by setting absolute quantity.
+        // Actually, I'll modify the SERVICE to allow delta addition.
+        addToCart(productId, delta);
     };
 
     window.removeFromCart = async (productId) => {
@@ -245,9 +329,6 @@
         const formattedTotal = `€ ${total.toFixed(2)}`;
         if (totalEl) totalEl.innerText = formattedTotal;
         if (subtotalEl) subtotalEl.innerText = formattedTotal;
-        // Fix for specific ID in HTML
-        const totalAlt = document.getElementById('cart-total text-gradient');
-        if (totalAlt) totalAlt.innerText = formattedTotal;
 
         if (items.length === 0) {
             container.innerHTML = `
@@ -265,13 +346,137 @@
                 </div>
                 <div class="cart-item-info">
                     <div class="fw-bold">${item.prodotto.nome}</div>
-                    <div class="text-muted small">${item.qtn} x € ${item.prodotto.prezzo.toFixed(2)}</div>
+                    <div class="text-muted small">€ ${item.prodotto.prezzo.toFixed(2)} cad.</div>
+                    <div class="d-flex align-items-center mt-2">
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-secondary btn-sm px-2 py-0 border-secondary" onclick="updateItemQuantity(${item.prodotto.id}, -1)">-</button>
+                            <span class="px-3 border-top border-bottom border-secondary bg-dark" style="line-height: 1.8;">${item.qtn}</span>
+                            <button class="btn btn-outline-secondary btn-sm px-2 py-0 border-secondary" onclick="updateItemQuantity(${item.prodotto.id}, 1)">+</button>
+                        </div>
+                    </div>
                 </div>
                 <button class="btn btn-sm btn-outline-danger border-0" onclick="removeFromCart(${item.prodotto.id})">
                     <i class="fas fa-trash-alt"></i>
                 </button>
             </div>
         `).join('');
+    };
+
+    /**
+     * Orders Logic
+     */
+    const fetchOrders = async () => {
+        try {
+            const response = await fetch('/api/orders', { headers: getAuthHeaders() });
+            if (response.ok) {
+                orders = await response.json();
+                renderOrders();
+            }
+        } catch (err) {
+            showToast('Errore caricamento ordini', 'error');
+        }
+    };
+
+    const renderOrders = () => {
+        const container = document.getElementById('orders-container');
+        if (!container) return;
+
+        if (orders.length === 0) {
+            container.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-box-open fa-3x mb-3 text-muted"></i>
+                    <h3 class="text-muted">Non hai ancora effettuato ordini</h3>
+                    <button class="btn btn-primary-custom mt-3" onclick="showShop()">Inizia a fare acquisti</button>
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = orders.map(order => `
+            <div class="col-12 fade-in-up">
+                <div class="card bg-dark border-secondary shadow-sm mb-3">
+                    <div class="card-header border-secondary d-flex justify-content-between align-items-center py-3">
+                        <div>
+                            <span class="text-muted small d-block">ORDINE EFFETTUATO</span>
+                            <span class="fw-bold">${new Date(order.data).toLocaleDateString()}</span>
+                        </div>
+                        <div>
+                            <span class="text-muted small d-block">TOTALE</span>
+                            <span class="fw-bold text-primary">€ ${order.items.reduce((acc, i) => acc + (i.prodotto.prezzo * i.qtn), 0).toFixed(2)}</span>
+                        </div>
+                        <div>
+                            <span class="text-muted small d-block">ORDINE #</span>
+                            <span class="fw-bold">${order.id}</span>
+                        </div>
+                        <span class="badge rounded-pill bg-success px-3 py-2">Consegnato</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                ${order.items.map(item => `
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-secondary rounded p-2 me-3">
+                                            <i class="fas fa-tag text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">${item.prodotto.nome}</h6>
+                                            <p class="text-muted small mb-0">Quantità: ${item.qtn} • Prezzo unitario: € ${item.prodotto.prezzo.toFixed(2)}</p>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="col-md-4 border-start border-secondary py-2">
+                                <h6 class="fw-bold mb-3">Dettagli Consegna</h6>
+                                <p class="text-muted small mb-1"><i class="fas fa-map-marker-alt me-2"></i> ${order.indirizzo}</p>
+                                <p class="text-muted small"><i class="fas fa-truck me-2"></i> Consegna stimata: ${new Date(order.consegna).toLocaleDateString()}</p>
+                                <button class="btn btn-outline-light btn-sm w-100 mt-2 rounded-pill">Traccia pacco</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    };
+
+    window.handleCheckout = async () => {
+        const token = localStorage.getItem('jwt_token');
+        if (!token) {
+            showToast('Accedi per completare l\'acquisto', 'info');
+            showAuth('login');
+            return;
+        }
+
+        if (!currentCart || !currentCart.items || currentCart.items.length === 0) {
+            showToast('Il tuo carrello è vuoto', 'error');
+            return;
+        }
+
+        const indirizzo = prompt("Inserisci l'indirizzo di spedizione:");
+        if (!indirizzo) return;
+
+        try {
+            const response = await fetch(`/api/orders?indirizzo=${encodeURIComponent(indirizzo)}`, {
+                method: 'POST',
+                headers: getAuthHeaders()
+            });
+
+            if (response.ok) {
+                showToast('Ordine creato con successo!', 'success');
+                
+                // Close offcanvas if open
+                const cartEl = document.getElementById('cartOffcanvas');
+                const offcanvas = bootstrap.Offcanvas.getInstance(cartEl) || new bootstrap.Offcanvas(cartEl);
+                offcanvas.hide();
+
+                // Refresh state
+                await fetchCart();
+                showOrders();
+            } else {
+                const errMsg = await response.text();
+                showToast(`Errore: ${errMsg || 'Impossibile completare l\'ordine'}`, 'error');
+            }
+        } catch (err) {
+            showToast('Errore di connessione durante il checkout', 'error');
+        }
     };
 
     /**
@@ -379,6 +584,12 @@
             searchTimeout = setTimeout(() => {
                 renderProducts(e.target.value);
             }, 300);
+        });
+
+        // Refresh cart when offcanvas shown
+        const cartOffcanvas = document.getElementById('cartOffcanvas');
+        cartOffcanvas?.addEventListener('show.bs.offcanvas', () => {
+            fetchCart();
         });
 
         // Init UI

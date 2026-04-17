@@ -30,9 +30,9 @@ public class CarrelloService {
     // Se il prodotto è già presente aggiorna la quantità, altrimenti lo aggiunge
     // come nuovo item.
     public Carrello aggiungiProdotto(String username, Long idProdotto, int qtn) {
-        // FIX: validazione quantità
-        if (qtn <= 0) {
-            throw new IllegalArgumentException("La quantità deve essere maggiore di zero");
+        // FIX: validazione quantità (Allow negative for decrement, but handle 0 separately)
+        if (qtn == 0) {
+            throw new IllegalArgumentException("La quantità non può essere zero");
         }
 
         Carrello carrello = carrelloRepository.findByUtente_Username(username);
@@ -47,8 +47,13 @@ public class CarrelloService {
 
         ItemQuantity item = carrello.productAlreadyPresent(prodotto);
         if (item != null) {
-            item.setQtn(item.getQtn() + qtn);
-        } else {
+            int newQty = item.getQtn() + qtn;
+            if (newQty <= 0) {
+                carrello.getItems().remove(item);
+            } else {
+                item.setQtn(newQty);
+            }
+        } else if (qtn > 0) {
             item = new ItemQuantity();
             item.setProdotto(prodotto);
             item.setQtn(qtn);
@@ -96,7 +101,9 @@ public class CarrelloService {
     public Carrello getCarrelloByUsername(String username) {
         Carrello carrello = carrelloRepository.findByUtente_Username(username);
         if (carrello == null) {
-            throw new EntityNotFoundException("Carrello non trovato per l'utente: " + username);
+            carrello = new Carrello();
+            carrello.setUtente(utenteRepository.findByUsername(username));
+            carrello = carrelloRepository.save(carrello);
         }
         return carrello;
     }

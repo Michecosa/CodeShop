@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.final_project.Model.Carrello;
+import com.example.final_project.Model.Ruolo;
 import com.example.final_project.Model.Utente;
 import com.example.final_project.Repository.CarrelloRepository;
 import com.example.final_project.Repository.UtenteRepository;
@@ -20,8 +21,6 @@ import com.example.final_project.Security.JwtService;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    // Iniettiamo i servizi necessari per la gestione dell'autenticazione e della
-    // registrazione
     @Autowired
     private JwtService jwtService;
     @Autowired
@@ -33,11 +32,17 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authManager;
 
-    // Endpoint per la registrazione di un nuovo utente
     @PostMapping("/register")
     public void register(@RequestBody Utente utente) {
         utente.setPassword(criptatore.encode(utente.getPassword()));
-        utente.setRoles("ROLE_USER");
+
+        // Fix: invece di utente.setRoles("ROLE_USER") creiamo un oggetto Ruolo
+        // Il cascade su Utente.ruoli propagherà il salvataggio automaticamente
+        Ruolo ruoloUser = new Ruolo();
+        ruoloUser.setNome("ROLE_USER");
+        ruoloUser.setUtente(utente);
+        utente.getRuoli().add(ruoloUser);
+
         utente = utenteRepository.save(utente);
 
         Carrello c = new Carrello();
@@ -45,18 +50,10 @@ public class AuthController {
         carrelloRepository.save(c);
     }
 
-    // Endpoint per il login di un utente esistente
     @PostMapping("/login")
     public String login(@RequestBody Utente utente) {
         Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(utente.getUsername(), utente.getPassword()));
         return jwtService.generateToken(auth);
     }
-    // Endpoint di test per verificare l'autenticazione dell'utente
-    /*
-     * @GetMapping("/test")
-     * public String dammiNomeUtente(Authentication auth) {
-     * return auth.getName();
-     * }
-     */
 }
