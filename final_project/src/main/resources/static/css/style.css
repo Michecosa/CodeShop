@@ -82,7 +82,9 @@ body {
     opacity: 1;
 }
 
+/* MODIFICATO: Aggiunto position: relative */
 .btn-icon {
+    position: relative;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
     color: var(--text-main);

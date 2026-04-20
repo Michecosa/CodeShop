@@ -4,20 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinalShop | Premium E-Commerce</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts: Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#" onclick="showHome()">
@@ -38,13 +32,12 @@
                 </ul>
                 
                 <div class="d-flex align-items-center gap-3">
-                    <button class="btn-icon" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                    <button class="btn-icon position-relative" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="cart-badge">0</span>
                     </button>
                     
                     <div id="user-actions">
-                        <!-- Swapped by JS -->
                         <button class="btn btn-outline-light rounded-pill px-4" onclick="showAuth('login')">Accedi</button>
                     </div>
 
@@ -64,12 +57,9 @@
         </div>
     </nav>
 
-    <!-- Toast Container -->
     <div class="toast-container" id="toast-container"></div>
 
-    <!-- Home View -->
     <div id="home-view">
-        <!-- Hero Section -->
         <section class="hero-section">
             <div class="hero-bg-glow"></div>
             <div class="container">
@@ -91,7 +81,6 @@
             </div>
         </section>
 
-        <!-- Category Section -->
         <section class="py-5">
             <div class="container">
                 <div class="row mb-5">
@@ -129,7 +118,6 @@
             </div>
         </section>
 
-        <!-- Featured Products Section -->
         <section class="py-5 bg-dark">
             <div class="container">
                 <div class="row mb-5 align-items-center">
@@ -142,13 +130,11 @@
                     </div>
                 </div>
                 <div class="row g-4" id="featured-products">
-                    <!-- Dynamic Featured Products -->
-                </div>
+                    </div>
             </div>
         </section>
     </div>
 
-    <!-- Shop View -->
     <div id="shop-view" class="container py-5 d-none" style="margin-top: 80px;">
         <div class="row mb-5 align-items-center">
             <div class="col-md-6">
@@ -164,7 +150,6 @@
         </div>
         
         <div class="row g-4" id="products-grid">
-            <!-- Dynamic Products -->
             <div class="col-12 text-center py-5">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -173,7 +158,6 @@
         </div>
     </div>
 
-    <!-- Orders View -->
     <div id="orders-view" class="container py-5 d-none" style="margin-top: 80px;">
         <div class="row mb-5">
             <div class="col-12">
@@ -183,7 +167,6 @@
         </div>
         
         <div id="orders-container" class="row g-4">
-            <!-- Dynamic Orders -->
             <div class="col-12 text-center py-5">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -192,7 +175,6 @@
         </div>
     </div>
 
-    <!-- Auth View -->
     <div id="auth-view" class="container d-none" style="margin-top: 100px;">
         <div class="auth-container">
             <div class="auth-card">
@@ -256,7 +238,6 @@
         </div>
     </div>
 
-    <!-- Cart Offcanvas -->
     <div class="offcanvas offcanvas-end text-white" tabindex="-1" id="cartOffcanvas">
         <div class="offcanvas-header bg-dark">
             <h5 class="offcanvas-title fw-bold">
@@ -266,7 +247,6 @@
         </div>
         <div class="offcanvas-body d-flex flex-column">
             <div id="cart-items-container" class="flex-grow-1 overflow-auto pe-2">
-                <!-- Items -->
                 <div class="text-center py-5">
                     <i class="fas fa-shopping-cart fa-3x mb-3 text-white"></i>
                     <p class="text-white">Il carrello è vuoto</p>
@@ -290,10 +270,8 @@
         </div>
     </div>
 
-    <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- App Logic -->
     <script src="js/auth.js"></script>
 </body>
 </html>
