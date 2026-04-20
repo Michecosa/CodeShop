@@ -10,6 +10,39 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .contact-social-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            border-radius: 12px;
+            padding: 0.7rem 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .contact-social-btn:hover {
+            background: rgba(99,102,241,0.15);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .contact-social-btn.linkedin:hover {
+            background: rgba(10,102,194,0.15);
+            border-color: #0a66c2;
+            color: #0a66c2;
+        }
+        .role-badge-admin {
+            background: rgba(239,68,68,0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.35);
+        }
+        .role-badge-user {
+            background: rgba(99,102,241,0.15);
+            color: var(--primary);
+            border: 1px solid rgba(99,102,241,0.35);
+        }
+    </style>
 </head>
 
 <body>
@@ -30,7 +63,7 @@
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="#" onclick="showHome()">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="showShop()">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contatti</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showContacts()">Contatti</a></li>
                 </ul>
 
                 <div class="d-flex align-items-center gap-3">
@@ -212,8 +245,9 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <h4 class="fw-bold mb-1" id="profile-display-name">&#8212;</h4>
-                    <p class="text-muted small mb-3" id="profile-display-email">&#8212;</p>
-                    <div id="profile-role-badges" class="mb-3"></div>
+                    <div id="profile-role-badge" class="mb-3">
+                        <span id="profile-role-label" class="badge px-3 py-2" style="font-size:0.82rem; border-radius:20px;">&#8212;</span>
+                    </div>
                     <span class="badge profile-badge-member">
                         <i class="fas fa-star me-1"></i> Membro FinalShop
                     </span>
@@ -295,6 +329,71 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Contacts View -->
+    <div id="contacts-view" class="container py-5 d-none" style="margin-top: 80px;">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="display-5 fw-bold">Il nostro <span class="text-gradient">Team</span></h2>
+                <p class="text-white">I creatori dietro FinalShop</p>
+            </div>
+        </div>
+        <div class="row g-4 justify-content-center">
+
+            <!-- Michela -->
+            <div class="col-md-5">
+                <div class="profile-avatar-card text-center p-4">
+                    <div class="profile-avatar mx-auto mb-3" style="background: linear-gradient(135deg,#ec4899,#a855f7);">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4 class="fw-bold mb-1">Michela</h4>
+                    <span class="badge profile-badge-member mb-3 d-inline-block">
+                        <i class="fas fa-star me-1"></i> Team Member
+                    </span>
+                    <hr class="my-3 border-secondary">
+                    <div class="d-flex flex-column gap-3">
+                        <a href="https://github.com/Michecosa" target="_blank"
+                           class="contact-social-btn d-flex align-items-center justify-content-center gap-2">
+                            <i class="fab fa-github fa-lg"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/michela-della-gatta/" target="_blank"
+                           class="contact-social-btn linkedin d-flex align-items-center justify-content-center gap-2">
+                            <i class="fab fa-linkedin fa-lg"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donato -->
+            <div class="col-md-5">
+                <div class="profile-avatar-card text-center p-4">
+                    <div class="profile-avatar mx-auto mb-3" style="background: linear-gradient(135deg,#6366f1,#06b6d4);">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4 class="fw-bold mb-1">Donato</h4>
+                    <span class="badge profile-badge-member mb-3 d-inline-block">
+                        <i class="fas fa-star me-1"></i> Team Member
+                    </span>
+                    <hr class="my-3 border-secondary">
+                    <div class="d-flex flex-column gap-3">
+                        <a href="https://github.com/DonatoMorra" target="_blank"
+                           class="contact-social-btn d-flex align-items-center justify-content-center gap-2">
+                            <i class="fab fa-github fa-lg"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/donato-morra-b513ba358/" target="_blank"
+                           class="contact-social-btn linkedin d-flex align-items-center justify-content-center gap-2">
+                            <i class="fab fa-linkedin fa-lg"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -402,6 +501,35 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="js/auth.js"></script>
+    <script>
+        // Contacts view helper
+        function showContacts() {
+            const views = ['home-view','shop-view','orders-view','profile-view','auth-view','contacts-view'];
+            views.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('d-none');
+            });
+            const cv = document.getElementById('contacts-view');
+            if (cv) cv.classList.remove('d-none');
+        }
+
+        // Role badge helper — call after loading profile data
+        function setProfileRoleBadge(roles) {
+            const label = document.getElementById('profile-role-label');
+            if (!label) return;
+            const isAdmin = Array.isArray(roles)
+                ? roles.some(r => (typeof r === 'string' ? r : r.authority || r.name || '').toUpperCase().includes('ADMIN'))
+                : String(roles).toUpperCase().includes('ADMIN');
+            if (isAdmin) {
+                label.textContent = '👑 Amministratore';
+                label.className = 'badge px-3 py-2 role-badge-admin';
+            } else {
+                label.textContent = '👤 Utente';
+                label.className = 'badge px-3 py-2 role-badge-user';
+            }
+        }
+        window.setProfileRoleBadge = setProfileRoleBadge;
+    </script>
 </body>
 
 </html>
