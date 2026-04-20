@@ -9,6 +9,7 @@
     let orders = [];
     let currentCart = null;
     let searchTimeout = null;
+    let activeCategory = null;
 
     const getAuthHeaders = () => {
         const token = localStorage.getItem('jwt_token');
@@ -50,7 +51,10 @@
         showView('home');
         fetchProducts();
     };
-    window.showShop = () => showView('shop');
+    window.showShop = (category = null) => {
+        activeCategory = category;
+        showView('shop');
+    };
     window.showOrders = () => {
         const token = localStorage.getItem('jwt_token');
         if (!token) {
@@ -240,6 +244,7 @@
             if (response.ok) {
                 products = await response.json();
                 renderProducts(query);
+                renderCategoryFilters();
                 renderFeaturedProducts();
             }
         } catch (err) {
@@ -280,14 +285,52 @@
 
     const getProductIcon = (p) => techIcon(p.nome) || categoryIcon(p.categorie);
 
+    const renderCategoryFilters = () => {
+        const container = document.getElementById('category-filters');
+        if (!container) return;
+
+        const seen = new Set();
+        const allCategories = [];
+        products.forEach(p => {
+            (p.categorie || []).forEach(c => {
+                if (!seen.has(c.id)) {
+                    seen.add(c.id);
+                    allCategories.push(c);
+                }
+            });
+        });
+        allCategories.sort((a, b) => a.nome.localeCompare(b.nome));
+
+        const buttons = [
+            `<button class="btn-filter${!activeCategory ? ' active' : ''}" onclick="setFilter(null)"><i class="fas fa-th me-1"></i>Tutti</button>`,
+            ...allCategories.map(c =>
+                `<button class="btn-filter${activeCategory === c.nome ? ' active' : ''}" onclick="setFilter('${c.nome.replace(/'/g, "\\'")}')">${c.nome}</button>`
+            )
+        ].join('');
+
+        container.innerHTML = `<div class="d-flex flex-wrap gap-2">${buttons}</div>`;
+    };
+
+    window.setFilter = (category) => {
+        activeCategory = category;
+        const searchQuery = document.getElementById('search-input')?.value || '';
+        renderProducts(searchQuery);
+        renderCategoryFilters();
+    };
+
     const renderProducts = (query = '') => {
         const grid = document.getElementById('products-grid');
         const countEl = document.getElementById('product-count');
         if (!grid) return;
 
         let filtered = products;
+        if (activeCategory) {
+            filtered = filtered.filter(p =>
+                p.categorie && p.categorie.some(c => c.nome === activeCategory)
+            );
+        }
         if (query) {
-            filtered = products.filter(p =>
+            filtered = filtered.filter(p =>
                 p.nome.toLowerCase().includes(query.toLowerCase())
             );
         }

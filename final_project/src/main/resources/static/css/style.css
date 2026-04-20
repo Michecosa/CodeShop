@@ -298,6 +298,31 @@ body {
     color: white;
 }
 
+/* Category Filter Buttons */
+.btn-filter {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    color: var(--text-muted);
+    padding: 6px 18px;
+    font-size: 0.85rem;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-filter:hover {
+    border-color: var(--primary);
+    color: var(--text-main);
+}
+
+.btn-filter.active {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: white;
+    font-weight: 600;
+}
+
 /* Auth Modal Styles */
 .auth-container {
     max-width: 450px;

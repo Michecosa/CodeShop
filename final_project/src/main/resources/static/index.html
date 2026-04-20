@@ -137,31 +137,28 @@
                 </div>
                 <div class="row g-4">
                     <div class="col-md-4">
-                        <div class="category-card" onclick="showShop()">
-                            <div class="category-icon"><i class="fas fa-code"></i></div>
-                            <h3>Snippet & Algoritmi</h3>
-                            <p class="text-white">Frammenti di codice pronti all'uso, algoritmi ottimizzati e utility
-                                riutilizzabili</p>
+                        <div class="category-card" onclick="showShop('Elettronica')">
+                            <div class="category-icon"><i class="fas fa-microchip"></i></div>
+                            <h3>Elettronica</h3>
+                            <p class="text-white">Smartphone, cuffie, tastiere, monitor e i migliori dispositivi tech</p>
                             <a href="#" class="text-gradient fw-bold text-decoration-none">Sfoglia <i
                                     class="fas fa-arrow-right ms-1"></i></a>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="category-card" onclick="showShop()">
-                            <div class="category-icon"><i class="fas fa-layer-group"></i></div>
-                            <h3>Progetti Completi</h3>
-                            <p class="text-white">Applicazioni full-stack con frontend, backend e documentazione inclusa
-                            </p>
+                        <div class="category-card" onclick="showShop('Abbigliamento')">
+                            <div class="category-icon"><i class="fas fa-tshirt"></i></div>
+                            <h3>Abbigliamento</h3>
+                            <p class="text-white">T-shirt, jeans, giacche e tutto lo stile che cerchi</p>
                             <a href="#" class="text-gradient fw-bold text-decoration-none">Sfoglia <i
                                     class="fas fa-arrow-right ms-1"></i></a>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="category-card" onclick="showShop()">
-                            <div class="category-icon"><i class="fas fa-database"></i></div>
-                            <h3>Script Database</h3>
-                            <p class="text-white">Query, migration, stored procedure e tool per PostgreSQL, MySQL e
-                                altri</p>
+                        <div class="category-card" onclick="showShop('Sport')">
+                            <div class="category-icon"><i class="fas fa-running"></i></div>
+                            <h3>Sport</h3>
+                            <p class="text-white">Scarpe da corsa, tappetini yoga e tutto l'equipaggiamento sportivo</p>
                             <a href="#" class="text-gradient fw-bold text-decoration-none">Sfoglia <i
                                     class="fas fa-arrow-right ms-1"></i></a>
                         </div>
@@ -200,6 +197,10 @@
                     <input type="text" placeholder="Cerca un prodotto..." id="search-input">
                 </div>
             </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12" id="category-filters"></div>
         </div>
 
         <div class="row g-4" id="products-grid">
