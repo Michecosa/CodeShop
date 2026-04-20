@@ -106,7 +106,6 @@
 
     const renderProfile = async (user) => {
         document.getElementById('profile-display-name').textContent = user.username || '\u2014';
-        document.getElementById('profile-display-email').textContent = user.mail || user.email || '\u2014';
         document.getElementById('profile-username').textContent = user.username || '\u2014';
         document.getElementById('profile-email').textContent = user.mail || user.email || '\u2014';
 
