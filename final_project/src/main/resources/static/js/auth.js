@@ -118,7 +118,7 @@
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 roles = (payload.roles || '').split(',').map(r => r.trim()).filter(Boolean);
             }
-            const badgesEl = document.getElementById('profile-role-badges');
+            const badgesEl = document.getElementById('profile-role-badge');
             badgesEl.innerHTML = roles.map(role => {
                 if (role === 'ROLE_ADMIN') {
                     return '<span class="badge bg-warning text-white me-1"><i class="fas fa-crown me-1"></i>Utente Premium</span>';
@@ -128,11 +128,8 @@
                 return '';
             }).join('');
         } catch {
-            document.getElementById('profile-role-badges').innerHTML = '';
+            document.getElementById('profile-role-badge').innerHTML = '';
         }
-
-        document.getElementById('profile-last-login').textContent =
-            new Date().toLocaleDateString('it-IT');
 
         try {
             const resp = await fetch('/api/orders', { headers: getAuthHeaders() });
