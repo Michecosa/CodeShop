@@ -63,6 +63,7 @@
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="#" onclick="showHome()">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="showShop()">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showChiSiamo()">Chi siamo</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="showContacts()">Contatti</a></li>
                 </ul>
 
@@ -115,7 +116,7 @@
                         <div class="d-flex gap-3">
                             <button class="btn btn-primary-custom px-5 py-3 w-auto" onclick="showShop()">Inizia lo
                                 Shopping</button>
-                            <button class="btn btn-outline-light rounded-pill px-5 py-3">Scopri di più</button>
+                            <button class="btn btn-outline-light rounded-pill px-5 py-3" onclick="showChiSiamo()">Scopri di più</button>
                         </div>
                     </div>
                     <div class="col-lg-6 mt-5 mt-lg-0 hero-img-container fade-in-up" style="animation-delay: 0.2s;">
@@ -332,6 +333,112 @@
         </div>
     </div>
 
+    <!-- Chi Siamo View -->
+    <div id="chi-siamo-view" class="container py-5 d-none" style="margin-top: 80px;">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="display-5 fw-bold">Chi <span class="text-gradient">Siamo</span></h2>
+                <p class="text-white">La storia dietro CodeShop</p>
+            </div>
+        </div>
+
+        <div class="row g-5 align-items-center mb-5">
+            <div class="col-lg-6">
+                <div class="profile-section-card h-100">
+                    <div class="profile-section-header">
+                        <i class="fas fa-rocket me-2 text-primary"></i>
+                        <span>Le Nostre Origini</span>
+                    </div>
+                    <div class="profile-section-body">
+                        <p class="text-white" style="line-height:1.8;">
+                            CodeShop nasce nel 2023 da un'idea semplice ma potente: creare un marketplace dove gli sviluppatori possano
+                            condividere e acquistare risorse di qualità — snippet, progetti completi, script database — senza perdersi
+                            nei meandri di repository disorganizzati o forum dispersivi.
+                        </p>
+                        <p class="text-white" style="line-height:1.8;">
+                            Tutto è iniziato durante un hackathon universitario a Napoli. Michela e Donato, due studenti appassionati
+                            di tecnologia, si sono ritrovati a cercare disperatamente del codice riutilizzabile per completare il loro
+                            progetto in tempo. La frustrazione di non trovare nulla di affidabile e ben documentato ha acceso la
+                            scintilla: <em class="text-gradient fw-bold">«Perché non creare noi il posto che avremmo voluto trovare?»</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="profile-section-card h-100">
+                    <div class="profile-section-header">
+                        <i class="fas fa-bullseye me-2 text-primary"></i>
+                        <span>La Nostra Missione</span>
+                    </div>
+                    <div class="profile-section-body">
+                        <p class="text-white" style="line-height:1.8;">
+                            La nostra missione è democratizzare l'accesso a codice di qualità. Crediamo che ogni sviluppatore,
+                            dal junior che muove i primi passi fino al senior architect, meriti strumenti concreti e pronti all'uso
+                            per accelerare il proprio lavoro.
+                        </p>
+                        <p class="text-white" style="line-height:1.8;">
+                            Ogni risorsa presente su CodeShop viene revisionata manualmente prima di essere pubblicata, garantendo
+                            standard elevati di leggibilità, documentazione e compatibilità. Non vendiamo soltanto codice:
+                            vendiamo <span class="text-gradient fw-bold">tempo e fiducia</span>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="profile-section-card">
+                    <div class="profile-section-header">
+                        <i class="fas fa-timeline me-2 text-primary"></i>
+                        <span>La Nostra Storia</span>
+                    </div>
+                    <div class="profile-section-body">
+                        <div class="row g-4">
+                            <div class="col-md-3 text-center">
+                                <div class="category-icon mx-auto mb-3" style="width:60px;height:60px;font-size:1.4rem;">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <h5 class="fw-bold text-gradient">2023 — L'idea</h5>
+                                <p class="text-white small">L'hackathon che ha fatto nascere l'intuizione: un marketplace dedicato agli sviluppatori.</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="category-icon mx-auto mb-3" style="width:60px;height:60px;font-size:1.4rem;">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <h5 class="fw-bold text-gradient">2024 — Lo sviluppo</h5>
+                                <p class="text-white small">Mesi di lavoro per costruire la piattaforma, testare con utenti reali e raccogliere feedback.</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="category-icon mx-auto mb-3" style="width:60px;height:60px;font-size:1.4rem;">
+                                    <i class="fas fa-store"></i>
+                                </div>
+                                <h5 class="fw-bold text-gradient">2025 — Il lancio</h5>
+                                <p class="text-white small">CodeShop apre al pubblico con oltre 50 risorse pronte all'uso e una community in crescita.</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="category-icon mx-auto mb-3" style="width:60px;height:60px;font-size:1.4rem;">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h5 class="fw-bold text-gradient">Oggi</h5>
+                                <p class="text-white small">Continuiamo a crescere con nuovi vendor, nuove categorie e una community sempre più attiva.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <p class="text-white mb-4">Vuoi conoscere il team che c'è dietro?</p>
+                <button class="btn btn-primary-custom px-5 py-3 w-auto" onclick="showContacts()">
+                    <i class="fas fa-users me-2"></i>Incontra il Team
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Contacts View -->
     <div id="contacts-view" class="container py-5 d-none" style="margin-top: 80px;">
         <div class="row mb-5">
@@ -502,15 +609,20 @@
 
     <script src="js/auth.js"></script>
     <script>
+        const allViews = ['home-view','shop-view','orders-view','profile-view','auth-view','contacts-view','chi-siamo-view'];
+
         // Contacts view helper
         function showContacts() {
-            const views = ['home-view','shop-view','orders-view','profile-view','auth-view','contacts-view'];
-            views.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.add('d-none');
-            });
+            allViews.forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('d-none'); });
             const cv = document.getElementById('contacts-view');
             if (cv) cv.classList.remove('d-none');
+        }
+
+        function showChiSiamo() {
+            allViews.forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('d-none'); });
+            const cv = document.getElementById('chi-siamo-view');
+            if (cv) cv.classList.remove('d-none');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Role badge helper — call after loading profile data
