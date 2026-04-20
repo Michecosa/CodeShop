@@ -22,7 +22,7 @@
      * View Controllers
      */
     const showView = (viewName) => {
-        const views = ['home-view', 'shop-view', 'auth-view', 'orders-view', 'profile-view'];
+        const views = ['home-view', 'shop-view', 'auth-view', 'orders-view', 'profile-view', 'contacts-view'];
         views.forEach(v => {
             const el = document.getElementById(v);
             if (el) el.classList.add('d-none');
