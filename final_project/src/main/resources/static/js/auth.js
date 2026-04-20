@@ -110,12 +110,23 @@
         document.getElementById('profile-username').textContent = user.username || '\u2014';
         document.getElementById('profile-email').textContent = user.mail || user.email || '\u2014';
 
-        if (user.createdAt || user.registrationDate) {
-            document.getElementById('profile-joined').textContent =
-                new Date(user.createdAt || user.registrationDate).toLocaleDateString('it-IT');
-        } else {
-            document.getElementById('profile-joined').textContent = 'N/D';
+        try {
+            const token = localStorage.getItem('jwt_token');
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const roles = (payload.roles || '').split(',').map(r => r.trim()).filter(Boolean);
+            const badgesEl = document.getElementById('profile-role-badges');
+            badgesEl.innerHTML = roles.map(role => {
+                if (role === 'ROLE_ADMIN') {
+                    return '<span class="badge bg-warning text-dark me-1"><i class="fas fa-crown me-1"></i>Utente Premium</span>';
+                } else if (role === 'ROLE_USER') {
+                    return '<span class="badge bg-secondary me-1"><i class="fas fa-user me-1"></i>Utente Normale</span>';
+                }
+                return '';
+            }).join('');
+        } catch {
+            document.getElementById('profile-role-badges').innerHTML = '';
         }
+
         document.getElementById('profile-last-login').textContent =
             new Date().toLocaleDateString('it-IT');
 
