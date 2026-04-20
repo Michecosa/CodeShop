@@ -41,6 +41,11 @@ public class Utente extends BaseEntity {
         return ruoli;
     }
 
+    @com.fasterxml.jackson.annotation.JsonProperty("roles")
+    public List<String> getRoleNames() {
+        return getRuoli().stream().map(Ruolo::getNome).toList();
+    }
+
     @OneToOne(mappedBy = "utente")
     @com.fasterxml.jackson.annotation.JsonIgnore
     private Carrello carrello;

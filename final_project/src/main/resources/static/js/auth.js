@@ -111,9 +111,14 @@
         document.getElementById('profile-email').textContent = user.mail || user.email || '\u2014';
 
         try {
-            const token = localStorage.getItem('jwt_token');
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const roles = (payload.roles || '').split(',').map(r => r.trim()).filter(Boolean);
+            let roles = [];
+            if (Array.isArray(user.roles) && user.roles.length > 0) {
+                roles = user.roles;
+            } else {
+                const token = localStorage.getItem('jwt_token');
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                roles = (payload.roles || '').split(',').map(r => r.trim()).filter(Boolean);
+            }
             const badgesEl = document.getElementById('profile-role-badges');
             badgesEl.innerHTML = roles.map(role => {
                 if (role === 'ROLE_ADMIN') {
