@@ -14,6 +14,7 @@ import com.example.final_project.Model.Ordine;
 import com.example.final_project.Model.Utente;
 import com.example.final_project.Repository.CarrelloRepository;
 import com.example.final_project.Repository.OrdineRepository;
+import com.example.final_project.Repository.UtenteRepository;
 import com.example.final_project.Observer.OrderObserver;
 import com.example.final_project.Observer.OrderSubject;
 
