@@ -3,10 +3,10 @@
 ## 0. Interfaccia & Layout 🎨
 - [x] **Aggiungere un footer**: Implementare un footer coerente in tutte le pagine dell'applicazione per migliorare la navigazione e l'estetica.
 
-## 2. Sistema di notufiche 🔔
-- [ ] **Notifica di aggiornamento password**: Se la password viene cambiata, l'utente viene avvisato tramite email
-- [ ] **Notifica di conferma acquisto**: Al completamento di un acquisto, l'utente viene avvisato del corretto completamento
-- [ ] **Notifica di Newsletter**: In caso di iscrizione alla newsletter, l'utente ricererà un email di benvenuto alla CodeShop Newsletter
+## 2. Sistema di notifiche 🔔
+- [x] **Notifica di aggiornamento password**: Se la password viene cambiata, l'utente viene avvisato tramite email
+- [x] **Notifica di conferma acquisto**: Al completamento di un acquisto, l'utente viene avvisato del corretto completamento
+- [ ] **Notifica di Benvenuto**: In caso di registrazione, l'utente ricererà un email di benvenuto da CodeShop
 
 ## 3. Gestione Magazzino (Stock) 📦
 - [ ] **Scalamento Stock**: Implementare la logica in `OrdineService` che diminuisce il campo `stock` di ogni `Prodotto` acquistato
