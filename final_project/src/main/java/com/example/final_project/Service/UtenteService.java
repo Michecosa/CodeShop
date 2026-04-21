@@ -1,5 +1,6 @@
 package com.example.final_project.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,11 @@ import com.example.final_project.Exception.UtenteNonEsistenteException;
 import com.example.final_project.Model.Ruolo;
 import com.example.final_project.Model.Utente;
 import com.example.final_project.Repository.UtenteRepository;
+import com.example.final_project.Observer.UserObserver;
+import com.example.final_project.Observer.UserSubject;
 
 @Service
-public class UtenteService implements UserDetailsService {
+public class UtenteService implements UserDetailsService, UserSubject {
 
     @Autowired
     private UtenteRepository utenteRepository;
@@ -27,6 +30,26 @@ public class UtenteService implements UserDetailsService {
     @org.springframework.context.annotation.Lazy
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private List<UserObserver> observers = new ArrayList<>();
+
+    @Override
+    public void addUserObserver(UserObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeUserObserver(UserObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyUserObservers(Utente utente) {
+        for (UserObserver observer : observers) {
+            observer.update(utente);
+        }
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Utente utente = utenteRepository.findByUsername(username);
@@ -34,7 +57,6 @@ public class UtenteService implements UserDetailsService {
             throw new UsernameNotFoundException("Utente non trovato: " + username);
         }
 
-        // Fix: invece di splittare la stringa CSV, mappiamo direttamente la List<Ruolo>
         List<SimpleGrantedAuthority> authorities = utente.getRuoli().stream()
                 .map(r -> new SimpleGrantedAuthority(r.getNome()))
                 .toList();
@@ -70,7 +92,6 @@ public class UtenteService implements UserDetailsService {
         }
         utente.setPassword(passwordEncoder.encode(utente.getPassword()));
 
-        // Fix: se l'utente non ha ruoli assegnati, aggiungiamo ROLE_USER di default
         if (utente.getRuoli() == null || utente.getRuoli().isEmpty()) {
             Ruolo ruoloDefault = new Ruolo();
             ruoloDefault.setNome("ROLE_USER");
@@ -83,13 +104,21 @@ public class UtenteService implements UserDetailsService {
 
     public Utente aggiorna(Long id, Utente datiAggiornati) {
         Utente esistente = trovaPerID(id);
+        boolean pswCambiata = false;
+
         if (datiAggiornati.getMail() != null && !datiAggiornati.getMail().isBlank()) {
             esistente.setMail(datiAggiornati.getMail());
         }
         if (datiAggiornati.getPassword() != null && !datiAggiornati.getPassword().isBlank()) {
             esistente.setPassword(passwordEncoder.encode(datiAggiornati.getPassword()));
+            pswCambiata = true;
         }
-        return utenteRepository.save(esistente);
+
+        Utente saved = utenteRepository.save(esistente);
+        if (pswCambiata) {
+            notifyUserObservers(saved);
+        }
+        return saved;
     }
 
     public void elimina(Long id) {

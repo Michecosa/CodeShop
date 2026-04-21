@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
         .contact-social-btn {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
             border-radius: 12px;
@@ -21,26 +21,30 @@
             text-decoration: none;
             transition: all 0.3s;
         }
+
         .contact-social-btn:hover {
-            background: rgba(99,102,241,0.15);
+            background: rgba(99, 102, 241, 0.15);
             border-color: var(--primary);
             color: var(--primary);
             transform: translateY(-2px);
         }
+
         .contact-social-btn.linkedin:hover {
-            background: rgba(10,102,194,0.15);
+            background: rgba(10, 102, 194, 0.15);
             border-color: #0a66c2;
             color: #0a66c2;
         }
+
         .role-badge-admin {
-            background: rgba(239,68,68,0.15);
+            background: rgba(239, 68, 68, 0.15);
             color: #ef4444;
-            border: 1px solid rgba(239,68,68,0.35);
+            border: 1px solid rgba(239, 68, 68, 0.35);
         }
+
         .role-badge-user {
-            background: rgba(99,102,241,0.15);
+            background: rgba(99, 102, 241, 0.15);
             color: var(--primary);
-            border: 1px solid rgba(99,102,241,0.35);
+            border: 1px solid rgba(99, 102, 241, 0.35);
         }
     </style>
 </head>
@@ -86,7 +90,8 @@
                             <i class="fas fa-user"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 bg-dark text-white">
-                            <li><a class="dropdown-item text-white" href="#" onclick="showProfile()"><i class="fas fa-user-circle me-2"></i>
+                            <li><a class="dropdown-item text-white" href="#" onclick="showProfile()"><i
+                                        class="fas fa-user-circle me-2"></i>
                                     Profilo</a></li>
                             <li><a class="dropdown-item text-white" href="#" onclick="showOrders()"><i
                                         class="fas fa-history me-2"></i> Ordini</a></li>
@@ -112,11 +117,13 @@
                     <div class="col-lg-6 hero-content fade-in-up">
                         <h1 class="display-1">Scopri la <span class="text-gradient">Nuova Era</span> dello Shopping!
                         </h1>
-                        <p class="lead text-white mb-5">Esplora snippet, progetti completi e script database creati da sviluppatori per sviluppatori</p>
+                        <p class="lead text-white mb-5">Esplora snippet, progetti completi e script database creati da
+                            sviluppatori per sviluppatori</p>
                         <div class="d-flex gap-3">
                             <button class="btn btn-primary-custom px-5 py-3 w-auto" onclick="showShop()">Inizia lo
                                 Shopping</button>
-                            <button class="btn btn-outline-light rounded-pill px-5 py-3" onclick="showChiSiamo()">Scopri di più</button>
+                            <button class="btn btn-outline-light rounded-pill px-5 py-3" onclick="showChiSiamo()">Scopri
+                                di più</button>
                         </div>
                     </div>
                     <div class="col-lg-6 mt-5 mt-lg-0 hero-img-container fade-in-up" style="animation-delay: 0.2s;">
@@ -251,7 +258,8 @@
                     </div>
                     <h4 class="fw-bold mb-1" id="profile-display-name">&#8212;</h4>
                     <div id="profile-role-badge" class="mb-3">
-                        <span id="profile-role-label" class="badge px-3 py-2" style="font-size:0.82rem; border-radius:20px;">&#8212;</span>
+                        <span id="profile-role-label" class="badge px-3 py-2"
+                            style="font-size:0.82rem; border-radius:20px;">&#8212;</span>
                     </div>
                     <span class="badge profile-badge-member">
                         <i class="fas fa-star me-1"></i> Membro CodeShop
@@ -305,7 +313,8 @@
                                 <label class="profile-field-label mb-2">Password attuale</label>
                                 <div class="input-group-custom mb-0">
                                     <i class="fas fa-lock"></i>
-                                    <input type="password" id="current-password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+                                    <input type="password" id="current-password"
+                                        placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -324,7 +333,8 @@
                             </div>
                             <button class="btn-primary-custom w-auto px-5" onclick="handleChangePassword()">
                                 <span id="change-pw-text"><i class="fas fa-save me-2"></i>Salva Password</span>
-                                <span id="change-pw-spinner" class="spinner-border spinner-border-sm ms-2 d-none"></span>
+                                <span id="change-pw-spinner"
+                                    class="spinner-border spinner-border-sm ms-2 d-none"></span>
                             </button>
                         </div>
                     </div>
@@ -351,15 +361,21 @@
                     </div>
                     <div class="profile-section-body">
                         <p class="text-white" style="line-height:1.8;">
-                            CodeShop nasce nel 2023 da un'idea semplice ma potente: creare un marketplace dove gli sviluppatori possano
-                            condividere e acquistare risorse di qualità — snippet, progetti completi, script database — senza perdersi
+                            CodeShop nasce nel 2023 da un'idea semplice ma potente: creare un marketplace dove gli
+                            sviluppatori possano
+                            condividere e acquistare risorse di qualità — snippet, progetti completi, script database —
+                            senza perdersi
                             nei meandri di repository disorganizzati o forum dispersivi.
                         </p>
                         <p class="text-white" style="line-height:1.8;">
-                            Tutto è iniziato durante un hackathon universitario a Napoli. Michela e Donato, due studenti appassionati
-                            di tecnologia, si sono ritrovati a cercare disperatamente del codice riutilizzabile per completare il loro
-                            progetto in tempo. La frustrazione di non trovare nulla di affidabile e ben documentato ha acceso la
-                            scintilla: <em class="text-gradient fw-bold">«Perché non creare noi il posto che avremmo voluto trovare?»</em>
+                            Tutto è iniziato durante un hackathon universitario a Napoli. Michela e Donato, due studenti
+                            appassionati
+                            di tecnologia, si sono ritrovati a cercare disperatamente del codice riutilizzabile per
+                            completare il loro
+                            progetto in tempo. La frustrazione di non trovare nulla di affidabile e ben documentato ha
+                            acceso la
+                            scintilla: <em class="text-gradient fw-bold">«Perché non creare noi il posto che avremmo
+                                voluto trovare?»</em>
                         </p>
                     </div>
                 </div>
@@ -372,13 +388,17 @@
                     </div>
                     <div class="profile-section-body">
                         <p class="text-white" style="line-height:1.8;">
-                            La nostra missione è democratizzare l'accesso a codice di qualità. Crediamo che ogni sviluppatore,
-                            dal junior che muove i primi passi fino al senior architect, meriti strumenti concreti e pronti all'uso
+                            La nostra missione è democratizzare l'accesso a codice di qualità. Crediamo che ogni
+                            sviluppatore,
+                            dal junior che muove i primi passi fino al senior architect, meriti strumenti concreti e
+                            pronti all'uso
                             per accelerare il proprio lavoro.
                         </p>
                         <p class="text-white" style="line-height:1.8;">
-                            Ogni risorsa presente su CodeShop viene revisionata manualmente prima di essere pubblicata, garantendo
-                            standard elevati di leggibilità, documentazione e compatibilità. Non vendiamo soltanto codice:
+                            Ogni risorsa presente su CodeShop viene revisionata manualmente prima di essere pubblicata,
+                            garantendo
+                            standard elevati di leggibilità, documentazione e compatibilità. Non vendiamo soltanto
+                            codice:
                             vendiamo <span class="text-gradient fw-bold">tempo e fiducia</span>.
                         </p>
                     </div>
@@ -396,32 +416,40 @@
                     <div class="profile-section-body">
                         <div class="row g-4">
                             <div class="col-md-3 text-center">
-                                <div class="category-icon mx-auto mb-3" style="width:60px;height:60px;font-size:1.4rem;">
+                                <div class="category-icon mx-auto mb-3"
+                                    style="width:60px;height:60px;font-size:1.4rem;">
                                     <i class="fas fa-lightbulb"></i>
                                 </div>
                                 <h5 class="fw-bold text-gradient">2023 — L'idea</h5>
-                                <p class="text-white small">L'hackathon che ha fatto nascere l'intuizione: un marketplace dedicato agli sviluppatori.</p>
+                                <p class="text-white small">L'hackathon che ha fatto nascere l'intuizione: un
+                                    marketplace dedicato agli sviluppatori.</p>
                             </div>
                             <div class="col-md-3 text-center">
-                                <div class="category-icon mx-auto mb-3" style="width:60px;height:60px;font-size:1.4rem;">
+                                <div class="category-icon mx-auto mb-3"
+                                    style="width:60px;height:60px;font-size:1.4rem;">
                                     <i class="fas fa-code"></i>
                                 </div>
                                 <h5 class="fw-bold text-gradient">2024 — Lo sviluppo</h5>
-                                <p class="text-white small">Mesi di lavoro per costruire la piattaforma, testare con utenti reali e raccogliere feedback.</p>
+                                <p class="text-white small">Mesi di lavoro per costruire la piattaforma, testare con
+                                    utenti reali e raccogliere feedback.</p>
                             </div>
                             <div class="col-md-3 text-center">
-                                <div class="category-icon mx-auto mb-3" style="width:60px;height:60px;font-size:1.4rem;">
+                                <div class="category-icon mx-auto mb-3"
+                                    style="width:60px;height:60px;font-size:1.4rem;">
                                     <i class="fas fa-store"></i>
                                 </div>
                                 <h5 class="fw-bold text-gradient">2025 — Il lancio</h5>
-                                <p class="text-white small">CodeShop apre al pubblico con oltre 50 risorse pronte all'uso e una community in crescita.</p>
+                                <p class="text-white small">CodeShop apre al pubblico con oltre 50 risorse pronte
+                                    all'uso e una community in crescita.</p>
                             </div>
                             <div class="col-md-3 text-center">
-                                <div class="category-icon mx-auto mb-3" style="width:60px;height:60px;font-size:1.4rem;">
+                                <div class="category-icon mx-auto mb-3"
+                                    style="width:60px;height:60px;font-size:1.4rem;">
                                     <i class="fas fa-star"></i>
                                 </div>
                                 <h5 class="fw-bold text-gradient">Oggi</h5>
-                                <p class="text-white small">Continuiamo a crescere con nuovi vendor, nuove categorie e una community sempre più attiva.</p>
+                                <p class="text-white small">Continuiamo a crescere con nuovi vendor, nuove categorie e
+                                    una community sempre più attiva.</p>
                             </div>
                         </div>
                     </div>
@@ -452,7 +480,8 @@
             <!-- Michela -->
             <div class="col-md-5">
                 <div class="profile-avatar-card text-center p-4">
-                    <div class="profile-avatar mx-auto mb-3" style="background: linear-gradient(135deg,#ec4899,#a855f7);">
+                    <div class="profile-avatar mx-auto mb-3"
+                        style="background: linear-gradient(135deg,#ec4899,#a855f7);">
                         <i class="fas fa-user"></i>
                     </div>
                     <h4 class="fw-bold mb-1">Michela</h4>
@@ -462,12 +491,12 @@
                     <hr class="my-3 border-secondary">
                     <div class="d-flex flex-column gap-3">
                         <a href="https://github.com/Michecosa" target="_blank"
-                           class="contact-social-btn d-flex align-items-center justify-content-center gap-2">
+                            class="contact-social-btn d-flex align-items-center justify-content-center gap-2">
                             <i class="fab fa-github fa-lg"></i>
                             <span>GitHub</span>
                         </a>
                         <a href="https://www.linkedin.com/in/michela-della-gatta/" target="_blank"
-                           class="contact-social-btn linkedin d-flex align-items-center justify-content-center gap-2">
+                            class="contact-social-btn linkedin d-flex align-items-center justify-content-center gap-2">
                             <i class="fab fa-linkedin fa-lg"></i>
                             <span>LinkedIn</span>
                         </a>
@@ -478,7 +507,8 @@
             <!-- Donato -->
             <div class="col-md-5">
                 <div class="profile-avatar-card text-center p-4">
-                    <div class="profile-avatar mx-auto mb-3" style="background: linear-gradient(135deg,#6366f1,#06b6d4);">
+                    <div class="profile-avatar mx-auto mb-3"
+                        style="background: linear-gradient(135deg,#6366f1,#06b6d4);">
                         <i class="fas fa-user"></i>
                     </div>
                     <h4 class="fw-bold mb-1">Donato</h4>
@@ -488,12 +518,12 @@
                     <hr class="my-3 border-secondary">
                     <div class="d-flex flex-column gap-3">
                         <a href="https://github.com/DonatoMorra" target="_blank"
-                           class="contact-social-btn d-flex align-items-center justify-content-center gap-2">
+                            class="contact-social-btn d-flex align-items-center justify-content-center gap-2">
                             <i class="fab fa-github fa-lg"></i>
                             <span>GitHub</span>
                         </a>
                         <a href="https://www.linkedin.com/in/donato-morra-b513ba358/" target="_blank"
-                           class="contact-social-btn linkedin d-flex align-items-center justify-content-center gap-2">
+                            class="contact-social-btn linkedin d-flex align-items-center justify-content-center gap-2">
                             <i class="fab fa-linkedin fa-lg"></i>
                             <span>LinkedIn</span>
                         </a>
@@ -609,7 +639,7 @@
 
     <script src="js/auth.js"></script>
     <script>
-        const allViews = ['home-view','shop-view','orders-view','profile-view','auth-view','contacts-view','chi-siamo-view'];
+        const allViews = ['home-view', 'shop-view', 'orders-view', 'profile-view', 'auth-view', 'contacts-view', 'chi-siamo-view'];
 
         // Contacts view helper
         function showContacts() {
