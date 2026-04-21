@@ -8,9 +8,10 @@
 - [x] **Notifica di conferma acquisto**: Al completamento di un acquisto, l'utente viene avvisato del corretto completamento
 - [x] **Notifica di Benvenuto**: In caso di registrazione, l'utente ricererà un email di benvenuto da CodeShop
 
-## 3. Gestione Magazzino (Stock) 📦
-- [ ] **Scalamento Stock**: Implementare la logica in `OrdineService` che diminuisce il campo `stock` di ogni `Prodotto` acquistato
-- [ ] **Controllo Disponibilità**: Impedire l'aggiunta al carrello (o il checkout) se la quantità richiesta supera lo `stock` disponibile
+## 3. Gestione Prodotti Digitali 📦
+- [x] **Attributo link sul prodotto**: Aggiunto il campo `downloadLink` (o equivalente) sull'entità `Prodotto` per associare un URL/percorso al file digitale
+- [x] **Invio file via email come ZIP**: Al completamento dell'ordine, l'utente riceve via email il prodotto digitale allegato come file `.zip`
+- [x] **Bottone "Scarica"**: Nell'area ordini/profilo è presente un pulsante che permette all'utente di scaricare direttamente il file digitale acquistato
 
 <br>
 <br>
