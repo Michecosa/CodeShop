@@ -19,6 +19,7 @@ import com.example.final_project.Model.Utente;
 import com.example.final_project.Repository.CarrelloRepository;
 import com.example.final_project.Repository.UtenteRepository;
 import com.example.final_project.Security.JwtService;
+import com.example.final_project.Service.UtenteService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -34,6 +35,8 @@ public class AuthController {
     private CarrelloRepository carrelloRepository;
     @Autowired
     private AuthenticationManager authManager;
+    @Autowired
+    private UtenteService utenteService;
 
     @PostMapping("/register")
     public void register(@RequestBody Utente utente) {
@@ -67,16 +70,11 @@ public class AuthController {
 
     @PutMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestBody java.util.Map<String, String> body, Authentication auth) {
-        String currentPassword = body.get("currentPassword");
-        String newPassword = body.get("newPassword");
-
-        Utente utente = utenteRepository.findByUsername(auth.getName());
-        if (!criptatore.matches(currentPassword, utente.getPassword())) {
-            return ResponseEntity.badRequest().body("Password attuale non corretta");
+        try {
+            utenteService.cambiaPassword(auth.getName(), body.get("currentPassword"), body.get("newPassword"));
+            return ResponseEntity.ok("Password aggiornata");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        utente.setPassword(criptatore.encode(newPassword));
-        utenteRepository.save(utente);
-        return ResponseEntity.ok("Password aggiornata");
     }
 }

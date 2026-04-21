@@ -102,6 +102,19 @@ public class UtenteService implements UserDetailsService, UserSubject {
         return utenteRepository.save(utente);
     }
 
+    public void cambiaPassword(String username, String passwordAttuale, String nuovaPassword) {
+        Utente utente = utenteRepository.findByUsername(username);
+        if (utente == null) {
+            throw new UtenteNonEsistenteException("Utente non trovato: " + username);
+        }
+        if (!passwordEncoder.matches(passwordAttuale, utente.getPassword())) {
+            throw new IllegalArgumentException("Password attuale non corretta");
+        }
+        utente.setPassword(passwordEncoder.encode(nuovaPassword));
+        Utente saved = utenteRepository.save(utente);
+        notifyUserObservers(saved);
+    }
+
     public Utente aggiorna(Long id, Utente datiAggiornati) {
         Utente esistente = trovaPerID(id);
         boolean pswCambiata = false;
