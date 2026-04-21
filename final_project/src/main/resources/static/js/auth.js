@@ -608,24 +608,24 @@
                                 ${order.items.map(item => {
             const { cls, icon } = getProductIcon(item.prodotto);
             return `
-                                    <div class="row align-items-center g-2 mb-3">
-                                        <div class="col-12 col-md-9 d-flex align-items-center">
-                                            <div class="order-item-icon me-3 flex-shrink-0">
-                                                <i class="${cls} ${icon}"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0 fw-bold text-white">${item.prodotto.nome}</h6>
-                                                <p class="order-item-meta mb-0">Quantità: ${item.qtn} • Prezzo unitario: € ${item.prodotto.prezzo.toFixed(2)}</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-3 d-flex justify-content-md-end">
-                                            ${item.prodotto.linkDownload
-                                                ? `<a href="${item.prodotto.linkDownload}" class="btn-track-order w-100" target="_blank" rel="noopener noreferrer">Scarica</a>`
-                                                : `<span class="order-item-meta">N/D</span>`
-                                            }
-                                        </div>
-                                    </div>
-                                `;
+                <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="order-item-icon flex-shrink-0">
+                            <i class="${cls} ${icon}"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold text-white">${item.prodotto.nome}</h6>
+                            <p class="order-item-meta mb-0">Quantità: ${item.qtn} • Prezzo unitario: € ${item.prodotto.prezzo.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0">
+                        ${item.prodotto.linkDownload
+                                    ? `<a href="${item.prodotto.linkDownload}" class="btn-track-order" target="_blank" rel="noopener noreferrer">Scarica</a>`
+                                    : `<span class="order-item-meta">N/D</span>`
+                                }
+                    </div>
+                </div>
+            `;
         }).join('')}
                             </div>
                             <div class="col-md-4 order-delivery-col py-2">
