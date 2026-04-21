@@ -1,5 +1,9 @@
 # Obiettivi Giornalieri - 21 Aprile 2026
 
+## 0. Interfaccia & Layout 🎨
+- [ ] **Aggiungere un footer**: Implementare un footer coerente in tutte le pagine dell'applicazione per migliorare la navigazione e l'estetica.
+
+
 ## 1. Gestione Magazzino (Stock) 📦
 - [ ] **Scalamento Stock**: Implementare la logica in `OrdineService` che diminuisce il campo `stock` di ogni `Prodotto` acquistato
 - [ ] **Controllo Disponibilità**: Impedire l'aggiunta al carrello (o il checkout) se la quantità richiesta supera lo `stock` disponibile
