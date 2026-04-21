@@ -17,11 +17,13 @@ import com.example.final_project.Exception.UtenteNonEsistenteException;
 import com.example.final_project.Model.Ruolo;
 import com.example.final_project.Model.Utente;
 import com.example.final_project.Repository.UtenteRepository;
+import com.example.final_project.Observer.RegistrationObserver;
+import com.example.final_project.Observer.RegistrationSubject;
 import com.example.final_project.Observer.UserObserver;
 import com.example.final_project.Observer.UserSubject;
 
 @Service
-public class UtenteService implements UserDetailsService, UserSubject {
+public class UtenteService implements UserDetailsService, UserSubject, RegistrationSubject {
 
     @Autowired
     private UtenteRepository utenteRepository;
@@ -32,6 +34,26 @@ public class UtenteService implements UserDetailsService, UserSubject {
 
     @Autowired
     private List<UserObserver> observers = new ArrayList<>();
+
+    @Autowired
+    private List<RegistrationObserver> registrationObservers = new ArrayList<>();
+
+    @Override
+    public void addRegistrationObserver(RegistrationObserver observer) {
+        registrationObservers.add(observer);
+    }
+
+    @Override
+    public void removeRegistrationObserver(RegistrationObserver observer) {
+        registrationObservers.remove(observer);
+    }
+
+    @Override
+    public void notifyRegistrationObservers(Utente utente) {
+        for (RegistrationObserver observer : registrationObservers) {
+            observer.onRegistrazione(utente);
+        }
+    }
 
     @Override
     public void addUserObserver(UserObserver observer) {
@@ -99,7 +121,9 @@ public class UtenteService implements UserDetailsService, UserSubject {
             utente.getRuoli().add(ruoloDefault);
         }
 
-        return utenteRepository.save(utente);
+        Utente saved = utenteRepository.save(utente);
+        notifyRegistrationObservers(saved);
+        return saved;
     }
 
     public void cambiaPassword(String username, String passwordAttuale, String nuovaPassword) {

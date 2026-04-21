@@ -54,6 +54,8 @@ public class AuthController {
         Carrello c = new Carrello();
         c.setUtente(utente);
         carrelloRepository.save(c);
+
+        utenteService.notifyRegistrationObservers(utente);
     }
 
     @PostMapping("/login")
