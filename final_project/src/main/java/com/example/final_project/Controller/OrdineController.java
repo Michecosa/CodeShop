@@ -30,7 +30,28 @@ public class OrdineController {
     // Endpoint per ottenere tutti gli ordini dell'utente autenticato
     @GetMapping
     public List<Ordine> getMiei(Authentication authentication) {
-        return ordineService.trovaTuttiPerUtente(authentication.getName());
+        List<Ordine> ordini = ordineService.trovaTuttiPerUtente(authentication.getName());
+
+        // Logica per il limite di download (14 giorni)
+        // Gli amministratori (ROLE_ADMIN) non hanno limiti temporali.
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            LocalDate limite = LocalDate.now().minusDays(14);
+            for (Ordine ordine : ordini) {
+                if (ordine.getData() != null && ordine.getData().isBefore(limite)) {
+                    // Se l'ordine è più vecchio di 14 giorni, rimuoviamo i link di download per l'utente normale
+                    ordine.getItems().forEach(item -> {
+                        if (item.getProdotto() != null) {
+                            item.getProdotto().setLinkDownload(null);
+                        }
+                    });
+                }
+            }
+        }
+
+        return ordini;
     }
 
     // Endpoint per ottenere un ordine specifico tramite ID

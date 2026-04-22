@@ -27,13 +27,21 @@ public class ProdottoController {
     // Endpoint per ottenere tutti i prodotti
     @GetMapping
     public List<Prodotto> getAll() {
-        return prodottoService.trovaTutti();
+        List<Prodotto> prodotti = prodottoService.trovaTutti();
+        // Rimuoviamo il link di download per motivi di sicurezza: 
+        // deve essere visibile solo negli ordini effettuati.
+        prodotti.forEach(p -> p.setLinkDownload(null));
+        return prodotti;
     }
 
     // Endpoint per ottenere un prodotto specifico tramite ID
     @GetMapping("/{id}")
     public Prodotto getById(@PathVariable Long id) {
-        return prodottoService.trovaPerID(id);
+        Prodotto prodotto = prodottoService.trovaPerID(id);
+        if (prodotto != null) {
+            prodotto.setLinkDownload(null);
+        }
+        return prodotto;
     }
 
     // Endpoint per creare un nuovo prodotto

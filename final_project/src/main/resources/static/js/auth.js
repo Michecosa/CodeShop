@@ -19,6 +19,19 @@
         };
     };
 
+    const getRoles = () => {
+        const token = localStorage.getItem('jwt_token');
+        if (!token) return [];
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return (payload.roles || '').split(',').map(r => r.trim()).filter(Boolean);
+        } catch (e) {
+            return [];
+        }
+    };
+
+    const isAdmin = () => getRoles().includes('ROLE_ADMIN');
+
     /**
      * View Controllers
      */
@@ -587,13 +600,28 @@
             return;
         }
 
-        container.innerHTML = orders.map(order => `
+        container.innerHTML = orders.map(order => {
+            const orderDate = new Date(order.data);
+            const now = new Date();
+            // Reset hours to compare only days
+            now.setHours(0, 0, 0, 0);
+            orderDate.setHours(0, 0, 0, 0);
+            
+            const diffTime = now - orderDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            const daysLeft = 14 - diffDays;
+            const isExpired = diffDays >= 14 && !isAdmin();
+
+            return `
             <div class="col-12 fade-in-up">
                 <div class="order-card">
                     <div class="order-card-header">
-                        <div>
-                            <span class="order-label">ORDINE EFFETTUATO</span>
-                            <span class="order-value">${new Date(order.data).toLocaleDateString()}</span>
+                        <div class="d-flex align-items-end gap-2">
+                            <div>
+                                <span class="order-label">ORDINE EFFETTUATO</span>
+                                <span class="order-value mb-0">${new Date(order.data).toLocaleDateString()}</span>
+                            </div>
+                            ${!isAdmin() && !isExpired ? `<span class="badge bg-warning text-dark mb-1" style="font-size: 0.7rem; border-radius: 6px;"><i class="fas fa-hourglass-half me-1"></i>${daysLeft}gg rimanenti</span>` : ''}
                         </div>
                         <div>
                             <span class="order-label">TOTALE</span>
@@ -603,15 +631,17 @@
                             <span class="order-label">ORDINE #</span>
                             <span class="order-value">${order.id}</span>
                         </div>
-                        <span class="badge rounded-pill bg-success px-3 py-2">Pagato</span>
+                        <span class="badge rounded-pill ${isExpired && !isAdmin() ? 'bg-danger' : 'bg-success'} px-3 py-2">
+                            ${isExpired && !isAdmin() ? 'Download Scaduto' : 'Pagato'}
+                        </span>
                     </div>
                     <div class="order-card-body">
                         <div class="row">
                             <div class="col-md-8">
                                 <h6 class="fw-bold mb-3 text-white">I tuoi download</h6>
                                 ${order.items.map(item => {
-            const { cls, icon } = getProductIcon(item.prodotto);
-            return `
+                const { cls, icon } = getProductIcon(item.prodotto);
+                return `
                 <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
                     <div class="d-flex align-items-center gap-3">
                         <div class="order-item-icon flex-shrink-0">
@@ -624,13 +654,15 @@
                     </div>
                     <div class="flex-shrink-0">
                         ${item.prodotto.linkDownload
-                    ? `<a href="${item.prodotto.linkDownload}" class="btn-track-order" target="_blank" rel="noopener noreferrer">Scarica</a>`
-                    : `<span class="order-item-meta">N/D</span>`
-                }
+                        ? (isExpired && !isAdmin()
+                            ? `<span class="text-muted small">Accesso terminato</span>`
+                            : `<a href="${item.prodotto.linkDownload}" class="btn-track-order" target="_blank" rel="noopener noreferrer">Scarica</a>`)
+                        : `<span class="order-item-meta">N/D</span>`
+                    }
                     </div>
                 </div>
             `;
-        }).join('')}
+            }).join('')}
                             </div>
                             <div class="col-md-4 order-delivery-col py-2">
                                 <h6 class="fw-bold mb-3 text-white">Dettagli Ricezione</h6>
@@ -640,7 +672,8 @@
                     </div>
                 </div>
             </div>
-        `).join('');
+        `;
+        }).join('');
     };
 
     /**

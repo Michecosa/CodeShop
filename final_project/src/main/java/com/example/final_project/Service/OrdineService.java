@@ -95,7 +95,8 @@ public class OrdineService implements OrderSubject {
         ordine.setIndirizzo(indirizzo);
         ordine.setConsegna(LocalDate.now());
         ordine.setData(LocalDate.now());
-        ordine.setPagato(false);
+        ordine.setPagato(true);
+        ordine.setDataPagamento(LocalDate.now());
 
         List<ItemQuantity> items = new ArrayList<>();
         for (ItemQuantity cartItem : carrello.getItems()) {
