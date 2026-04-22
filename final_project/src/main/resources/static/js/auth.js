@@ -342,18 +342,21 @@
 
         grid.innerHTML = filtered.map(p => {
             const { cls, icon } = getProductIcon(p);
+            const unavailable = !p.disponibile;
             return `
             <div class="col-md-4 col-lg-3 fade-in-up">
-                <div class="product-card">
+                <div class="product-card${unavailable ? ' product-card--unavailable' : ''}">
                     <div class="product-image-box">
-                        <span class="badge-new">NEW</span>
+                        ${unavailable
+                            ? '<span class="badge-unavailable">Non disponibile</span>'
+                            : '<span class="badge-new">NEW</span>'}
                         <i class="${cls} ${icon}"></i>
                         <div class="price-box">€ ${p.prezzo.toFixed(2)}</div>
                     </div>
                     <div class="product-info">
                         <div class="product-cat">${p.categorie && p.categorie.length > 0 ? p.categorie.map(c => c.nome).join(', ') : 'Senza categoria'}</div>
                         <h5 class="product-name" title="${p.nome}">${p.nome}</h5>
-                        <button class="btn-add" onclick="handleAddToCart(${p.id})">
+                        <button class="btn-add" onclick="handleAddToCart(${p.id})" ${unavailable ? 'disabled' : ''}>
                             <i class="fas fa-cart-plus me-2"></i> Aggiungi al carrello
                         </button>
                     </div>
@@ -377,18 +380,21 @@
 
         grid.innerHTML = featured.map(p => {
             const { cls, icon } = getProductIcon(p);
+            const unavailable = !p.disponibile;
             return `
             <div class="col-md-6 col-lg-3 fade-in-up">
-                <div class="product-card">
+                <div class="product-card${unavailable ? ' product-card--unavailable' : ''}">
                     <div class="product-image-box">
-                        <span class="badge-new">NEW</span>
+                        ${unavailable
+                            ? '<span class="badge-unavailable">Non disponibile</span>'
+                            : '<span class="badge-new">NEW</span>'}
                         <i class="${cls} ${icon}"></i>
                         <div class="price-box">€ ${p.prezzo.toFixed(2)}</div>
                     </div>
                     <div class="product-info">
                         <div class="product-cat">${p.categorie && p.categorie.length > 0 ? p.categorie[0].nome : 'Senza categoria'}</div>
                         <h5 class="product-name">${p.nome}</h5>
-                        <button class="btn btn-outline-primary w-100 rounded-pill mt-2" onclick="handleAddToCart(${p.id})">
+                        <button class="btn btn-outline-primary w-100 rounded-pill mt-2" onclick="handleAddToCart(${p.id})" ${unavailable ? 'disabled' : ''}>
                             <i class="fas fa-cart-plus me-2"></i> Aggiungi
                         </button>
                     </div>

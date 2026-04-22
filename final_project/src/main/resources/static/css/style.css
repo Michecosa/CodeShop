@@ -247,6 +247,28 @@ body {
     font-weight: 700;
 }
 
+.badge-unavailable {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(120, 120, 120, 0.75);
+    color: #e0e0e0;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.product-card--unavailable {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.product-card--unavailable .btn-add,
+.product-card--unavailable .btn {
+    cursor: not-allowed;
+}
+
 .price-box {
     position: absolute;
     bottom: 15px;
