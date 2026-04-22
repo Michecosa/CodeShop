@@ -274,12 +274,10 @@
     const categoryIcon = (categorie) => {
         if (!categorie || categorie.length === 0) return { cls: 'fas', icon: 'fa-code' };
         const nome = categorie[0].nome.toLowerCase();
-        if (nome.includes('corso') || nome.includes('corsi')) return { cls: 'fas', icon: 'fa-graduation-cap' };
-        if (nome.includes('framework') || nome.includes('libreri')) return { cls: 'fas', icon: 'fa-cubes' };
-        if (nome.includes('tool') || nome.includes('utility') || nome.includes('strument')) return { cls: 'fas', icon: 'fa-tools' };
-        if (nome.includes('template') || nome.includes('starter')) return { cls: 'fas', icon: 'fa-file-code' };
-        if (nome.includes('plugin') || nome.includes('estension')) return { cls: 'fas', icon: 'fa-puzzle-piece' };
-        if (nome.includes('ebook') || nome.includes('guida') || nome.includes('libro')) return { cls: 'fas', icon: 'fa-book-open' };
+        if (nome.includes('snippet') || nome.includes('algoritmi')) return { cls: 'devicon-java-plain', icon: 'colored' };
+        if (nome.includes('progetti completi') || nome.includes('progetto')) return { cls: 'devicon-spring-plain', icon: 'colored' };
+        if (nome.includes('database') || nome.includes('script')) return { cls: 'devicon-mysql-plain', icon: 'colored' };
+        if (nome.includes('template') || nome.includes('web template') || nome.includes('ui kit') || nome.includes('design')) return { cls: 'fas', icon: 'fa-file-code' };
         return { cls: 'fas', icon: 'fa-code' };
     };
 
