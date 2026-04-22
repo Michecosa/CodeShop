@@ -33,4 +33,4 @@
 
 ## 6. Gestione Avanzata & Admin 🔐
 - [ ] **Dashboard Amministrativa (CRUD)**: Sviluppare un'interfaccia di backoffice dedicata per la gestione completa del catalogo, permettendo l'aggiunta, la modifica e la rimozione dei prodotti.
-- [ ] **Policy Download & Accessi**: Implementare una restrizione temporale (es. 14 giorni) per il download dei file acquistati dagli utenti (`ROLE_USER`). Gli amministratori (`ROLE_ADMIN`) avranno accesso illimitato e una visualizzazione completa per la simulazione operativa del backoffice.
+- [x] **Policy Download & Accessi**: Implementare una restrizione temporale (es. 14 giorni) per il download dei file acquistati dagli utenti (`ROLE_USER`). Gli amministratori (`ROLE_ADMIN`) avranno accesso illimitato e una visualizzazione completa per la simulazione operativa del backoffice.
