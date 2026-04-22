@@ -36,7 +36,7 @@
      * View Controllers
      */
     const showView = (viewName) => {
-        const views = ['home-view', 'shop-view', 'auth-view', 'orders-view', 'profile-view', 'contacts-view', 'chi-siamo-view'];
+        const views = ['home-view', 'shop-view', 'auth-view', 'orders-view', 'profile-view', 'contacts-view', 'chi-siamo-view', 'admin-view'];
         views.forEach(v => {
             const el = document.getElementById(v);
             if (el) el.classList.add('d-none');
@@ -209,6 +209,273 @@
         }
     };
 
+    /**
+     * Admin Logic
+     */
+    let adminProducts = [];
+    let adminCategories = [];
+
+    const isAdmin = () => {
+        try {
+            const token = localStorage.getItem('jwt_token');
+            if (!token) return false;
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const roles = (payload.roles || '').split(',').map(r => r.trim());
+            return roles.includes('ROLE_ADMIN');
+        } catch {
+            return false;
+        }
+    };
+
+    window.showAdmin = () => {
+        const token = localStorage.getItem('jwt_token');
+        if (!token || !isAdmin()) {
+            showToast('Accesso negato', 'error');
+            return;
+        }
+        showView('admin');
+        loadAdminDashboard();
+    };
+
+    const loadAdminDashboard = async () => {
+        await fetchAdminCategories();
+        await fetchAdminProducts();
+    };
+
+    const fetchAdminCategories = async () => {
+        try {
+            const res = await fetch('/api/categories');
+            if (res.ok) adminCategories = await res.json();
+        } catch {
+            adminCategories = [];
+        }
+    };
+
+    const fetchAdminProducts = async () => {
+        try {
+            const res = await fetch('/api/products', { headers: getAuthHeaders() });
+            if (res.ok) {
+                adminProducts = await res.json();
+                renderAdminProducts(adminProducts);
+            }
+        } catch {
+            showToast('Errore caricamento prodotti', 'error');
+        }
+    };
+
+    const renderAdminProducts = (prods) => {
+        const tbody = document.getElementById('admin-products-body');
+        const label = document.getElementById('admin-product-count-label');
+        if (!tbody) return;
+
+        if (label) label.textContent = `Catalogo Prodotti (${prods.length})`;
+
+        if (prods.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-5 text-muted">Nessun prodotto nel catalogo</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = prods.map(p => `
+            <tr>
+                <td class="text-muted px-4">#${p.id}</td>
+                <td class="fw-bold text-white">${p.nome}</td>
+                <td class="text-primary fw-bold">€ ${p.prezzo.toFixed(2)}</td>
+                <td class="text-white">${p.stock}</td>
+                <td>
+                    <span class="badge ${p.disponibile ? 'bg-success' : 'bg-danger'} rounded-pill px-3">
+                        ${p.disponibile ? 'Sì' : 'No'}
+                    </span>
+                </td>
+                <td class="text-muted small">${(p.categorie || []).map(c => c.nome).join(', ') || '—'}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary me-2 rounded-pill" onclick="openProductModal(${p.id})">
+                        <i class="fas fa-edit me-1"></i>Modifica
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="deleteProduct(${p.id}, '${p.nome.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-trash me-1"></i>Elimina
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    };
+
+    window.openProductModal = (productId = null) => {
+        ensureProductModal();
+
+        const product = productId != null ? adminProducts.find(p => p.id === productId) : null;
+
+        document.getElementById('product-modal-title').textContent = product ? 'Modifica Prodotto' : 'Nuovo Prodotto';
+        document.getElementById('pm-id').value = product ? product.id : '';
+        document.getElementById('pm-nome').value = product ? product.nome : '';
+        document.getElementById('pm-prezzo').value = product ? product.prezzo : '';
+        document.getElementById('pm-stock').value = product ? product.stock : 0;
+        document.getElementById('pm-link').value = product ? (product.linkDownload || '') : '';
+        document.getElementById('pm-disponibile').checked = product ? product.disponibile : true;
+
+        const catSelect = document.getElementById('pm-categorie');
+        catSelect.innerHTML = adminCategories.map(c =>
+            `<option value="${c.id}">${c.nome}</option>`
+        ).join('');
+
+        if (product && product.categorie) {
+            const selectedIds = product.categorie.map(c => c.id);
+            Array.from(catSelect.options).forEach(opt => {
+                opt.selected = selectedIds.includes(parseInt(opt.value));
+            });
+        } else {
+            Array.from(catSelect.options).forEach(opt => opt.selected = false);
+        }
+
+        new bootstrap.Modal(document.getElementById('productModal')).show();
+    };
+
+    window.saveProduct = async () => {
+        const id = document.getElementById('pm-id').value;
+        const nome = document.getElementById('pm-nome').value.trim();
+        const prezzo = parseFloat(document.getElementById('pm-prezzo').value);
+        const stock = parseInt(document.getElementById('pm-stock').value) || 0;
+        const linkDownload = document.getElementById('pm-link').value.trim() || null;
+        const disponibile = document.getElementById('pm-disponibile').checked;
+        const catSelect = document.getElementById('pm-categorie');
+        const categorie = Array.from(catSelect.selectedOptions).map(opt => ({
+            id: parseInt(opt.value),
+            nome: opt.textContent.trim()
+        }));
+
+        if (!nome) { showToast('Il nome è obbligatorio', 'error'); return; }
+        if (isNaN(prezzo) || prezzo < 0) { showToast('Inserisci un prezzo valido', 'error'); return; }
+
+        const saveText = document.getElementById('pm-save-text');
+        const saveSpinner = document.getElementById('pm-save-spinner');
+        const saveBtn = document.getElementById('pm-save-btn');
+        saveText.classList.add('d-none');
+        saveSpinner.classList.remove('d-none');
+        saveBtn.disabled = true;
+
+        try {
+            const url = id ? `/api/products/${id}` : '/api/products';
+            const method = id ? 'PUT' : 'POST';
+
+            const res = await fetch(url, {
+                method,
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ nome, prezzo, stock, disponibile, linkDownload, categorie })
+            });
+
+            if (res.ok) {
+                showToast(id ? 'Prodotto aggiornato con successo!' : 'Prodotto creato con successo!', 'success');
+                bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+                await fetchAdminProducts();
+            } else {
+                const msg = await res.text();
+                showToast(msg || 'Errore durante il salvataggio', 'error');
+            }
+        } catch {
+            showToast('Errore di connessione', 'error');
+        } finally {
+            saveText.classList.remove('d-none');
+            saveSpinner.classList.add('d-none');
+            saveBtn.disabled = false;
+        }
+    };
+
+    window.deleteProduct = async (id, nome) => {
+        if (!confirm(`Sei sicuro di voler eliminare "${nome}"?\nQuesta azione non può essere annullata.`)) return;
+
+        try {
+            const res = await fetch(`/api/products/${id}`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
+            if (res.ok) {
+                showToast('Prodotto eliminato', 'success');
+                await fetchAdminProducts();
+            } else {
+                showToast('Errore durante l\'eliminazione', 'error');
+            }
+        } catch {
+            showToast('Errore di connessione', 'error');
+        }
+    };
+
+    const ensureProductModal = () => {
+        if (document.getElementById('productModal')) return;
+        const div = document.createElement('div');
+        div.innerHTML = `
+        <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content" style="
+                    background: var(--bg-surface);
+                    border: 1px solid var(--glass-border);
+                    border-radius: 24px;
+                    box-shadow: 0 25px 60px -10px rgba(0,0,0,0.6);
+                    overflow: hidden;
+                ">
+                    <div class="modal-header" style="background: rgba(15,23,42,0.6); border-bottom: 1px solid var(--glass-border); padding: 1.5rem 2rem;">
+                        <div class="d-flex align-items-center gap-3">
+                            <div style="width:44px;height:44px;background:var(--gradient-primary);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">
+                                <i class="fas fa-box text-white"></i>
+                            </div>
+                            <h5 class="modal-title fw-bold text-white mb-0" id="product-modal-title">Prodotto</h5>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" style="opacity:0.5;"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <input type="hidden" id="pm-id">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="profile-field-label mb-2">Nome *</label>
+                                <div class="input-group-custom mb-0">
+                                    <i class="fas fa-tag"></i>
+                                    <input type="text" id="pm-nome" placeholder="Nome del prodotto">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="profile-field-label mb-2">Prezzo (€) *</label>
+                                <div class="input-group-custom mb-0">
+                                    <i class="fas fa-euro-sign"></i>
+                                    <input type="number" id="pm-prezzo" placeholder="0.00" min="0" step="0.01">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="profile-field-label mb-2">Stock</label>
+                                <div class="input-group-custom mb-0">
+                                    <i class="fas fa-warehouse"></i>
+                                    <input type="number" id="pm-stock" placeholder="0" min="0">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="profile-field-label mb-2">Link Download</label>
+                                <div class="input-group-custom mb-0">
+                                    <i class="fas fa-link"></i>
+                                    <input type="text" id="pm-link" placeholder="https://...">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="profile-field-label mb-2">Categorie <small class="text-muted">(Ctrl/Cmd per selezionare più categorie)</small></label>
+                                <select id="pm-categorie" multiple class="form-select bg-dark text-white border-secondary" style="border-radius:12px;min-height:110px;"></select>
+                            </div>
+                            <div class="col-12 mt-1">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="pm-disponibile" checked>
+                                    <label class="form-check-label text-white" for="pm-disponibile">Prodotto disponibile alla vendita</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="background: rgba(15,23,42,0.4); border-top: 1px solid var(--glass-border); padding: 1.25rem 2rem; gap: 0.75rem;">
+                        <button type="button" data-bs-dismiss="modal" style="background:transparent;border:1px solid var(--glass-border);color:var(--text-muted);border-radius:12px;padding:0.7rem 1.5rem;font-weight:600;cursor:pointer;">Annulla</button>
+                        <button id="pm-save-btn" onclick="saveProduct()" style="background:var(--gradient-primary);border:none;border-radius:12px;padding:0.7rem 2rem;font-weight:700;color:white;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 8px 20px -4px rgba(168,85,247,0.4);">
+                            <span id="pm-save-text"><i class="fas fa-save me-2"></i>Salva Prodotto</span>
+                            <span id="pm-save-spinner" class="d-none"><span class="spinner-border spinner-border-sm"></span></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+        document.body.appendChild(div.firstElementChild);
+    };
+
 
     /**
      * Auth Logic
@@ -238,6 +505,15 @@
             userActions.classList.remove('d-none');
             profileDropdown.classList.add('d-none');
             document.getElementById('cart-badge').classList.add('d-none');
+        }
+
+        const adminItem = document.getElementById('admin-nav-item');
+        if (adminItem) {
+            if (token && isAdmin()) {
+                adminItem.classList.remove('d-none');
+            } else {
+                adminItem.classList.add('d-none');
+            }
         }
     };
 
