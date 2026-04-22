@@ -265,22 +265,38 @@
 
         tbody.innerHTML = prods.map(p => `
             <tr>
-                <td class="text-white px-4">#${p.id}</td>
-                <td class="fw-bold text-white">${p.nome}</td>
-                <td class="text-primary fw-bold">€ ${p.prezzo.toFixed(2)}</td>
+                <td class="text-white px-4"><span class="opacity-50">#</span>${p.id}</td>
                 <td>
-                    <span class="badge ${p.disponibile ? 'bg-success' : 'bg-danger'} rounded-pill px-3">
-                        ${p.disponibile ? 'Sì' : 'No'}
+                    <div class="d-flex align-items-center">
+                        <div class="category-icon me-3 mb-0" style="width:36px;height:36px;font-size:0.9rem;">
+                            <i class="${getProductIcon(p).cls} ${getProductIcon(p).icon}"></i>
+                        </div>
+                        <span class="fw-bold text-white">${p.nome}</span>
+                    </div>
+                </td>
+                <td><span class="text-primary fw-bold">€ ${p.prezzo.toFixed(2)}</span></td>
+                <td>
+                    <span class="badge ${p.disponibile ? 'role-badge-user' : 'role-badge-admin'} rounded-pill px-3">
+                        <i class="fas ${p.disponibile ? 'fa-check-circle' : 'fa-times-circle'} me-1"></i>
+                        ${p.disponibile ? 'Disponibile' : 'Esaurito'}
                     </span>
                 </td>
-                <td class="text-white small">${(p.categorie || []).map(c => c.nome).join(', ') || '—'}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-primary me-2 rounded-pill" onclick="openProductModal(${p.id})">
-                        <i class="fas fa-edit me-1"></i>Modifica
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="deleteProduct(${p.id}, '${p.nome.replace(/'/g, "\\'")}')">
-                        <i class="fas fa-trash me-1"></i>Elimina
-                    </button>
+                    <div class="d-flex flex-wrap gap-1">
+                        ${(p.categorie || []).length > 0 
+                            ? p.categorie.map(c => `<span class="badge bg-navbar-darker small fw-normal">${c.nome}</span>`).join('') 
+                            : '<span class="text-muted small">Nessuna</span>'}
+                    </div>
+                </td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <button class="btn-action" title="Modifica" onclick="openProductModal(${p.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-action btn-delete" title="Elimina" onclick="deleteProduct(${p.id}, '${p.nome.replace(/'/g, "\\'")}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
         `).join('');

@@ -731,3 +731,87 @@ body {
 .btn-send:hover {
     transform: scale(1.2) rotate(-10deg);
 }
+
+/* Premium Table Styles */
+.premium-table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    width: 100%;
+    background: transparent !important;
+}
+
+.premium-table thead th {
+    background: rgba(15, 23, 42, 0.8) !important;
+    color: var(--text-white) !important;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    padding: 1.2rem 1.5rem;
+    border: none;
+}
+
+.premium-table thead th:first-child {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.premium-table thead th:last-child {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.premium-table tbody tr {
+    background: rgba(30, 41, 59, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.premium-table tbody tr:hover {
+    background: rgba(99, 102, 241, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+}
+
+.premium-table td {
+    padding: 1.2rem 1.5rem;
+    vertical-align: middle;
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-main);
+}
+
+.premium-table td:first-child {
+    border-left: 1px solid var(--glass-border);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.premium-table td:last-child {
+    border-right: 1px solid var(--glass-border);
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.premium-table .btn-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+}
+
+.premium-table .btn-action:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.premium-table .btn-action.btn-delete:hover {
+    background: #ef4444;
+}
