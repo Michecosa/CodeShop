@@ -28,4 +28,9 @@
 - [x] **Feedback Real-time**: Implementati toast di notifica per segnalare il successo, l'annullamento o eventuali errori durante la transazione PayPal.
 - [x] **Automazione Download**: L'integrazione tra il sistema di pagamento e l'Observer garantisce l'invio istantaneo dell'email con i link di download al termine dell'acquisto.
 - [x] **Visualizzazione Stato Pagato**: Mostrare chiaramente lo stato "Pagato" nell'area ordini dell'utente per migliorare la trasparenza.
+- [x] **Disponibilità Prodotto**: Impedire l'acquisto di un prodotto non disponibile 
 
+
+## 6. Gestione Avanzata & Admin 🔐
+- [ ] **Dashboard Amministrativa (CRUD)**: Sviluppare un'interfaccia di backoffice dedicata per la gestione completa del catalogo, permettendo l'aggiunta, la modifica e la rimozione dei prodotti.
+- [ ] **Policy Download & Accessi**: Implementare una restrizione temporale (es. 14 giorni) per il download dei file acquistati dagli utenti (`ROLE_USER`). Gli amministratori (`ROLE_ADMIN`) avranno accesso illimitato e una visualizzazione completa per la simulazione operativa del backoffice.
