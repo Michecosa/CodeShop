@@ -673,8 +673,9 @@
                         Newsletter</h6>
                     <p class="text-white small mb-3">Aggiornamenti sulle nuove risorse, direttamente in inbox.</p>
                     <div class="input-group-custom">
-                        <input type="email" placeholder="La tua email">
-                        <button class="btn-send"><i class="fas fa-paper-plane"></i></button>
+                        <input type="email" id="newsletter-email" placeholder="La tua email">
+                        <button class="btn-send" onclick="handleNewsletter()"><i
+                                class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
@@ -724,6 +725,15 @@
             }
         }
         window.setProfileRoleBadge = setProfileRoleBadge;
+
+        function handleNewsletter() {
+            const email = document.getElementById('newsletter-email').value;
+            if (email && email.includes('@')) {
+                window.location.href = "https://images-ext-1.discordapp.net/external/2ZyFUY5pFFXt_cXDkYyaDb8LL_q9wRbCmehYnJUuBLQ/https/media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2lyN3JoZTZzbzA1cm5lbDVyd2hueDZpMTY5NGt5Y3FtZGx5MWpyMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qZgHBlenHa1zKqy6Zn/giphy.gif";
+            } else {
+                alert('Per favore inserisci un email valida.');
+            }
+        }
     </script>
 </body>
 
