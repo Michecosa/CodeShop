@@ -382,7 +382,8 @@
     };
 
     window.deleteProduct = async (id, nome) => {
-        if (!confirm(`Sei sicuro di voler eliminare "${nome}"?\nQuesta azione non può essere annullata.`)) return;
+        const confirmed = await showConfirmModal(`Sei sicuro di voler eliminare "${nome}"? Questa azione non può essere annullata.`);
+        if (!confirmed) return;
 
         try {
             const res = await fetch(`/api/products/${id}`, {
@@ -1384,4 +1385,54 @@
     };
 
     document.addEventListener('DOMContentLoaded', initApp);
+    /**
+     * UI Helpers
+     */
+    const showConfirmModal = (message) => {
+        return new Promise((resolve) => {
+            const modalId = 'confirmModal-' + Date.now();
+            const modalHtml = `
+            <div class="modal fade" id="${modalId}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content premium-modal border-0 shadow-lg">
+                        <div class="modal-body p-5 text-center">
+                            <div class="mb-4 text-danger animate__animated animate__pulse animate__infinite" style="font-size: 3.5rem;">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <h3 class="text-white fw-bold mb-3">Conferma Azione</h3>
+                            <p class="text-white opacity-75 mb-5" style="font-size: 1.1rem; line-height: 1.6;">${message}</p>
+                            <div class="d-flex gap-3 justify-content-center">
+                                <button type="button" class="btn btn-outline-light rounded-pill px-4 py-2 border-opacity-25" data-bs-dismiss="modal" style="min-width: 120px;">Annulla</button>
+                                <button type="button" id="btn-confirm-${modalId}" class="btn btn-danger rounded-pill px-4 py-2 fw-bold" style="min-width: 120px; background: #ef4444; border: none; box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4);">Elimina</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            
+            const div = document.createElement('div');
+            div.innerHTML = modalHtml;
+            document.body.appendChild(div.firstElementChild);
+            
+            const modalEl = document.getElementById(modalId);
+            const confirmBtn = document.getElementById('btn-confirm-' + modalId);
+            const modal = new bootstrap.Modal(modalEl);
+            
+            let resolved = false;
+            
+            confirmBtn.onclick = () => {
+                resolved = true;
+                modal.hide();
+                resolve(true);
+            };
+            
+            modalEl.addEventListener('hidden.bs.modal', () => {
+                if (!resolved) resolve(false);
+                modalEl.remove();
+            });
+            
+            modal.show();
+        });
+    };
+
 })();
