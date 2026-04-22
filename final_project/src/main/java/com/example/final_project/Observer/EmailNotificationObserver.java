@@ -82,7 +82,10 @@ public class EmailNotificationObserver implements OrderObserver, UserObserver, R
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             
-            helper.setTo(ordine.getUtente().getMail());
+            String recipientEmail = (ordine.getIndirizzo() != null && !ordine.getIndirizzo().isBlank()) 
+                                    ? ordine.getIndirizzo() 
+                                    : ordine.getUtente().getMail();
+            helper.setTo(recipientEmail);
             helper.setSubject("Conferma Ordine #" + ordine.getId() + " - CodeShop");
             
             StringBuilder downloadLinks = new StringBuilder();
@@ -113,7 +116,7 @@ public class EmailNotificationObserver implements OrderObserver, UserObserver, R
             helper.setText(getHtmlTemplate("Grazie per il tuo Acquisto!", content), true);
 
             mailSender.send(message);
-            System.out.println("Email inviata con successo a: " + ordine.getUtente().getMail());
+            System.out.println("Email inviata con successo a: " + recipientEmail);
         } catch (Exception e) {
             System.err.println("Errore durante l'invio dell'email: " + e.getMessage());
         }
