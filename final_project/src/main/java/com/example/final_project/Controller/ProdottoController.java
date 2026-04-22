@@ -16,6 +16,8 @@ import com.example.final_project.Service.ProdottoService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.security.core.Authentication;
+
 // Controller per la gestione dei prodotti, con endpoint per operazioni CRUD
 @RestController
 @RequestMapping("/api/products")
@@ -26,20 +28,33 @@ public class ProdottoController {
 
     // Endpoint per ottenere tutti i prodotti
     @GetMapping
-    public List<Prodotto> getAll() {
+    public List<Prodotto> getAll(Authentication auth) {
         List<Prodotto> prodotti = prodottoService.trovaTutti();
-        // Rimuoviamo il link di download per motivi di sicurezza: 
-        // deve essere visibile solo negli ordini effettuati.
-        prodotti.forEach(p -> p.setLinkDownload(null));
+        
+        // Verifichiamo se l'utente è un admin
+        boolean isAdmin = auth != null && auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            // Rimuoviamo il link di download per motivi di sicurezza: 
+            // deve essere visibile solo negli ordini effettuati o agli admin.
+            prodotti.forEach(p -> p.setLinkDownload(null));
+        }
         return prodotti;
     }
 
     // Endpoint per ottenere un prodotto specifico tramite ID
     @GetMapping("/{id}")
-    public Prodotto getById(@PathVariable Long id) {
+    public Prodotto getById(@PathVariable Long id, Authentication auth) {
         Prodotto prodotto = prodottoService.trovaPerID(id);
+        
         if (prodotto != null) {
-            prodotto.setLinkDownload(null);
+            boolean isAdmin = auth != null && auth.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+            
+            if (!isAdmin) {
+                prodotto.setLinkDownload(null);
+            }
         }
         return prodotto;
     }
