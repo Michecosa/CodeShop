@@ -27,4 +27,5 @@
 ## 5. Esperienza Utente (UX) 🚀
 - [x] **Feedback Real-time**: Implementati toast di notifica per segnalare il successo, l'annullamento o eventuali errori durante la transazione PayPal.
 - [x] **Automazione Download**: L'integrazione tra il sistema di pagamento e l'Observer garantisce l'invio istantaneo dell'email con i link di download al termine dell'acquisto.
-- [ ] **Visualizzazione Stato Pagato**: Mostrare chiaramente lo stato "Pagato" nell'area ordini dell'utente per migliorare la trasparenza.
+- [x] **Visualizzazione Stato Pagato**: Mostrare chiaramente lo stato "Pagato" nell'area ordini dell'utente per migliorare la trasparenza.
+

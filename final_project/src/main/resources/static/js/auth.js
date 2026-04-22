@@ -348,8 +348,8 @@
                 <div class="product-card${unavailable ? ' product-card--unavailable' : ''}">
                     <div class="product-image-box">
                         ${unavailable
-                            ? '<span class="badge-unavailable">Non disponibile</span>'
-                            : '<span class="badge-new">NEW</span>'}
+                    ? '<span class="badge-unavailable">Non disponibile</span>'
+                    : '<span class="badge-new">NEW</span>'}
                         <i class="${cls} ${icon}"></i>
                         <div class="price-box">€ ${p.prezzo.toFixed(2)}</div>
                     </div>
@@ -386,8 +386,8 @@
                 <div class="product-card${unavailable ? ' product-card--unavailable' : ''}">
                     <div class="product-image-box">
                         ${unavailable
-                            ? '<span class="badge-unavailable">Non disponibile</span>'
-                            : '<span class="badge-new">NEW</span>'}
+                    ? '<span class="badge-unavailable">Non disponibile</span>'
+                    : '<span class="badge-new">NEW</span>'}
                         <i class="${cls} ${icon}"></i>
                         <div class="price-box">€ ${p.prezzo.toFixed(2)}</div>
                     </div>
@@ -603,7 +603,7 @@
                             <span class="order-label">ORDINE #</span>
                             <span class="order-value">${order.id}</span>
                         </div>
-                        <span class="badge rounded-pill bg-success px-3 py-2">Inviato</span>
+                        <span class="badge rounded-pill bg-success px-3 py-2">Pagato</span>
                     </div>
                     <div class="order-card-body">
                         <div class="row">
@@ -624,9 +624,9 @@
                     </div>
                     <div class="flex-shrink-0">
                         ${item.prodotto.linkDownload
-                                    ? `<a href="${item.prodotto.linkDownload}" class="btn-track-order" target="_blank" rel="noopener noreferrer">Scarica</a>`
-                                    : `<span class="order-item-meta">N/D</span>`
-                                }
+                    ? `<a href="${item.prodotto.linkDownload}" class="btn-track-order" target="_blank" rel="noopener noreferrer">Scarica</a>`
+                    : `<span class="order-item-meta">N/D</span>`
+                }
                     </div>
                 </div>
             `;
