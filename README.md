@@ -1,229 +1,160 @@
-# CodeShop — Full-Stack Spring Boot E-Commerce
+# CodeShop — Full-Stack E-Commerce for Digital Products
 
-![Spring Boot](https://img.shields.io/badge/Backend-Spring%20Boot%203.x-brightgreen)
-![JWT](https://img.shields.io/badge/Security-JSON%20Web%20Token-blue)
-![JPA](https://img.shields.io/badge/Persistence-Spring%20Data%20JPA-orange)
-![Spring Mail](https://img.shields.io/badge/Notifications-Spring%20Mail-yellow)
+![Spring Boot](https://img.shields.io/badge/Backend-Spring%20Boot%203.x-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![MySQL](https://img.shields.io/badge/Database-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![JWT](https://img.shields.io/badge/Security-JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+![PayPal](https://img.shields.io/badge/Payments-PayPal-003087?style=for-the-badge&logo=paypal&logoColor=white)
 
-Un sistema e-commerce per prodotti digitali (snippet, progetti, database) con autenticazione JWT, gestione ordini, download automatico dei file acquistati e notifiche email transazionali.
+**CodeShop** è una piattaforma e-commerce full-stack moderna dedicata alla vendita di prodotti digitali come snippet di codice, progetti software e database. Il sistema gestisce l'intero ciclo di vendita: dall'autenticazione sicura al checkout con PayPal, fino alla consegna automatizzata tramite email e area riservata.
 
+---
 
-## Sviluppatori
+## 📖 Indice
+- [Caratteristiche Principali](#caratteristiche-principali)
+- [Tech Stack](#tech-stack)
+- [Design Patterns](#design-patterns)
+- [Architettura del Progetto](#architettura-del-progetto)
+- [Installazione e Setup](#installazione-e-setup)
+- [Configurazione](#configurazione)
+- [Team di Sviluppo](#team-di-sviluppo)
+
+---
+
+## ✨ Caratteristiche Principali
+
+### 🔒 Autenticazione & Sicurezza
+- **JWT (JSON Web Token)**: Autenticazione stateless con token a scadenza (24h).
+- **RBAC**: Gestione ruoli differenziata tra `USER` e `ADMIN`.
+- **Password Security**: Criptazione delle credenziali e notifiche email in caso di modifica.
+
+### 🛒 Esperienza d'Acquisto
+- **Catalogo Dinamico**: Navigazione prodotti filtrata per categorie (Snippet, Progetti, Database).
+- **Carrello Avanzato**: Gestione persistente del carrello con ricalcolo totali lato server.
+- **Integrazione PayPal**: Flusso di pagamento sicuro tramite PayPal REST SDK con verifica transazione lato server.
+
+### 📦 Delivery Digitale
+- **Download Automatico**: Al termine del pagamento, l'utente riceve istantaneamente un'email con il link di download.
+- **Area Riservata**: Storico ordini completo con pulsante "Scarica" per ogni prodotto acquistato.
+- **Notifiche Transazionali**: Sistema di notifiche via email per registrazione, ordini e sicurezza account.
+
+### 🎨 UI/UX
+- **Modern Design**: Interfaccia responsiva con effetti Glassomorphism e animazioni fluide.
+- **SPA (Single Page Application)**: Navigazione dinamica senza ricaricamento della pagina.
+
+---
+
+## 🛠️ Tech Stack
+
+| Componente | Tecnologie |
+| :--- | :--- |
+| **Backend** | Java 21, Spring Boot 3.x, Spring Security |
+| **Persistence** | Spring Data JPA, Hibernate, MySQL |
+| **Security** | JSON Web Token (JWT) |
+| **Payments** | PayPal REST API SDK |
+| **Email** | Spring Mail (SMTP), HTML Templates |
+| **Frontend** | HTML5, CSS3 (Vanilla), JavaScript (ES6+) |
+| **Build Tool** | Maven |
+
+---
+
+## 📐 Design Patterns
+Il progetto implementa diversi pattern architetturali per garantire scalabilità e manutenibilità:
+
+- **Observer Pattern**: Utilizzato per il sistema di notifiche. Ogni azione rilevante (Registrazione, Ordine) notifica i vari `Observer` per l'invio di email o log di sistema.
+- **MVC (Model-View-Controller)**: Separazione netta tra logica di business, persistenza e presentazione.
+- **Repository Pattern**: Per l'astrazione dell'accesso ai dati tramite Spring Data JPA.
+
+---
+
+## 📂 Architettura del Progetto
+
+```text
+ProgettoFinale/
+├── final_project/
+│   ├── src/main/java/com/example/final_project/
+│   │   ├── Config/          # Configurazioni (Security, PayPal, Mail)
+│   │   ├── Controller/      # Endpoint REST API
+│   │   ├── Model/           # Entità JPA (User, Product, Order, etc.)
+│   │   ├── Repository/      # Interfacce Spring Data JPA
+│   │   ├── Service/         # Business Logic e integrazioni esterne
+│   │   ├── Security/        # Logica JWT e Filtri di sicurezza
+│   │   └── Observer/        # Implementazione del pattern Observer
+│   └── src/main/resources/
+│       ├── static/          # Frontend Assets (HTML, CSS, JS)
+│       └── application.yaml # Configurazione applicativa
+```
+
+---
+
+## 🚀 Installazione e Setup
+
+### Prerequisiti
+- **JDK 21** o superiore
+- **MySQL 8.0+**
+- **Maven 3.8+**
+
+### Step 1: Clonare il repository
+```bash
+git clone https://github.com/Michecosa/ProgettoFinale.git
+cd ProgettoFinale/final_project
+```
+
+### Step 2: Configurazione Database
+Crea un database MySQL chiamato `final_project`:
+```sql
+CREATE DATABASE final_project;
+```
+
+### Step 3: Configurazione Ambiente
+Modifica il file `src/main/resources/application.yaml` inserendo le tue credenziali:
+- Database (Username/Password)
+- SMTP Email (Gmail App Password)
+- PayPal Client ID & Secret
+
+### Step 4: Build e Avvio
+```bash
+mvn clean install
+mvn spring-boot:run
+```
+L'applicazione sarà disponibile all'indirizzo: `http://localhost:8080`
+
+---
+
+## ⚙️ Configurazione
+
+### PayPal Sandbox
+Per testare i pagamenti, assicurati di avere un account developer su [PayPal Developer](https://developer.paypal.com/) e configura le chiavi:
+```yaml
+paypal:
+  client-id: YOUR_CLIENT_ID
+  client-secret: YOUR_CLIENT_SECRET
+  mode: sandbox
+```
+
+---
+
+## 👥 Team di Sviluppo
 
 <table>
   <tr>
     <td align="center">
       <a href="https://github.com/DonatoMorra">
-        <img src="https://github.com/DonatoMorra.png" width="80" style="border-radius:50%"/><br/>
-        <b>Donato Morra</b>
+        <img src="https://github.com/DonatoMorra.png" width="100" style="border-radius:50%"/><br/>
+        <b>Donato Morra</b><br>
+        <sub>Lead Developer</sub>
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/Michecosa">
-        <img src="https://github.com/Michecosa.png" width="80" style="border-radius:50%"/><br/>
-        <b>Michela Della Gatta</b>
+        <img src="https://github.com/Michecosa.png" width="100" style="border-radius:50%"/><br/>
+        <b>Michela Della Gatta</b><br>
+        <sub>Full-Stack Developer</sub>
       </a>
     </td>
   </tr>
 </table>
 
-<br>
-<br>
-<br>
-
-## Indice
-
-- [Tech Stack](#tech-stack)
-- [Funzionalità](#funzionalità)
-- [Architettura del Database](#architettura-del-database)
-- [Sicurezza](#sicurezza)
-- [Struttura del Progetto](#struttura-del-progetto)
-
 ---
 
-## Tech Stack
-
-| Layer | Tecnologia |
-| :--- | :--- |
-| Backend | Spring Boot 3.x, Spring MVC |
-| Security | Spring Security + JWT (stateless, 24h expiry) |
-| Persistence | Spring Data JPA / Hibernate, MySQL |
-| Email | Spring Mail (SMTP Gmail, template HTML) |
-| Payments | PayPal REST SDK |
-| Pattern | Observer (notifiche email) |
-| Frontend | HTML/CSS/JS vanilla (SPA) |
-
----
-
-## Funzionalità
-
-### Autenticazione & Autorizzazione
-- Registrazione e login protetti con JWT
-- Ruoli utente (`USER` / `ADMIN`)
-- Ogni risorsa (carrello, ordini) è isolata per utente
-
-### Catalogo & Carrello
-- Navigazione prodotti per categoria (Snippet, Progetti, Database)
-- Gestione carrello con calcolo totali lato server
-- Flag `disponibile` per nascondere prodotti senza eliminarli
-
-### Gestione Ordini
-- Creazione ordine dal carrello con persistenza in `Ordine` + `ItemQuantity`
-- Storico ordini per utente
-- Stima data di consegna (`LocalDate consegna`)
-
-### Prodotti Digitali
-- Campo `linkDownload` sull'entità `Prodotto` per associare il file acquistabile
-- Dopo l'acquisto, l'utente riceve via email il link di download diretto
-- Pulsante "Scarica" nell'area ordini del profilo utente
-
-### Notifiche Email
-Implementate tramite **pattern Observer** (`EmailNotificationObserver`):
-
-| Evento | Email inviata |
-| :--- | :--- |
-| Registrazione | Benvenuto in CodeShop con riepilogo account |
-| Cambio password | Avviso di modifica credenziali |
-| Completamento ordine | Conferma acquisto + link di download per ogni prodotto digitale |
-
-### Integrazione Pagamenti (PayPal)
-È stato implementato un sistema di checkout sicuro tramite **PayPal REST API**:
-- **Checkout Dinamico**: Il backend genera un `approvalUrl` di PayPal in base al totale del carrello.
-- **Flusso di Approvazione**: L'utente viene reindirizzato su PayPal per confermare il pagamento e poi riportato sull'applicazione (`success` o `cancel`).
-- **Verifica Lato Server**: Al ritorno dall'approvazione, il backend esegue il pagamento tramite il `paymentId` e il `PayerID` per garantirne la validità prima di confermare l'ordine.
-
-| Endpoint | Metodo | Descrizione |
-| :--- | :--- | :--- |
-| `/payment/create` | `POST` | Inizia il processo di pagamento e restituisce l'URL di approvazione |
-| `/payment/success` | `GET` | Endpoint di callback per pagamenti completati con successo |
-| `/payment/cancel` | `GET` | Endpoint di callback per pagamenti annullati |
-
-### Interfaccia
-- Single Page Application con navigazione dinamica
-- Footer con 4 colonne: logo, navigazione, categorie, newsletter
-- Layout responsivo con effetti glassomorphism
-
----
-
-## Architettura del Database
-
-### Entità
-
-| Entità | Attributi Chiave | Note |
-| :--- | :--- | :--- |
-| **Utente** | `username`, `password`, `email`, `ruolo` | Proprietario di ordini e carrello; autenticato via JWT |
-| **Prodotto** | `nome`, `descrizione`, `prezzo`, `stock`, `disponibile`, `linkDownload` | `linkDownload` contiene l'URL del file digitale |
-| **Categoria** | `nome`, `descrizione` | `@ManyToMany` con Prodotto |
-| **Ordine** | `dataOrdine`, `consegna`, `indirizzo` | Appartiene a un Utente; contiene più `ItemQuantity` |
-| **ItemQuantity** | `quantita`, `prezzoUnitario` | Pivot tra `Ordine` e `Prodotto`; preserva il prezzo storico |
-| **Carrello** | `sessioneId`, `totale` | Stato temporaneo pre-checkout |
-
-### Relazioni JPA
-- `Utente` → `Ordine`: `@OneToMany` / `@ManyToOne`
-- `Ordine` → `ItemQuantity` → `Prodotto`: composizione con prezzo salvato al momento dell'acquisto
-- `Prodotto` ↔ `Categoria`: `@ManyToMany`
-
----
-
-## Sicurezza
-
-Spring Security con filtro JWT garantisce che ogni utente acceda esclusivamente ai propri dati (ordini, carrello, profilo). I token scadono dopo 24 ore.
-
----
-
-## Struttura del Progetto
-
-```
-ProgettoFinale/
-├── README.md
-├── OBIETTIVI.md
-└── final_project/                          # Modulo Maven principale
-    ├── pom.xml
-    ├── mvnw / mvnw.cmd
-    └── src/
-        ├── main/
-        │   ├── java/com/example/final_project/
-        │   │   ├── FinalProjectApplication.java
-        │   │   ├── Config/                 # Configurazioni (PayPal, ecc.)
-        │   │   │   └── PayPalConfig.java
-        │   │   ├── Controller/             # REST Controllers
-        │   │   │   ├── AuthController.java
-        │   │   │   ├── CarrelloController.java
-        │   │   │   ├── CategoriaController.java
-        │   │   │   ├── ItemController.java
-        │   │   │   ├── OrdineController.java
-        │   │   │   ├── PaymentController.java      # Gestione redirect e API PayPal
-        │   │   │   ├── ProdottoController.java
-        │   │   │   └── UtenteController.java
-        │   │   ├── Model/                  # Entità JPA
-        │   │   │   ├── BaseEntity.java
-        │   │   │   ├── Carrello.java
-        │   │   │   ├── Categoria.java
-        │   │   │   ├── ItemQuantity.java
-        │   │   │   ├── Ordine.java
-        │   │   │   ├── Prodotto.java
-        │   │   │   ├── Ruolo.java
-        │   │   │   └── Utente.java
-        │   │   ├── Repository/             # Spring Data JPA Repositories
-        │   │   │   ├── CarrelloRepository.java
-        │   │   │   ├── CategoriaRepository.java
-        │   │   │   ├── ItemRepository.java
-        │   │   │   ├── OrdineRepository.java
-        │   │   │   ├── ProdottoRepository.java
-        │   │   │   └── UtenteRepository.java
-        │   │   ├── Service/                # Business Logic
-        │   │   │   ├── CarrelloService.java
-        │   │   │   ├── CategoriaService.java
-        │   │   │   ├── ItemService.java
-        │   │   │   ├── OrdineService.java
-        │   │   │   ├── PayPalService.java          # Logica di creazione ed esecuzione pagamenti
-        │   │   │   ├── ProdottoService.java
-        │   │   │   └── UtenteService.java
-        │   │   ├── Security/               # JWT & Spring Security
-        │   │   │   ├── JwtAuthenticationFilter.java
-        │   │   │   ├── JwtService.java
-        │   │   │   └── SecurityConfig.java
-        │   │   ├── Observer/               # Pattern Observer (notifiche email)
-        │   │   │   ├── EmailNotificationObserver.java
-        │   │   │   ├── OrderObserver.java
-        │   │   │   ├── OrderSubject.java
-        │   │   │   ├── RegistrationObserver.java
-        │   │   │   ├── RegistrationSubject.java
-        │   │   │   ├── UserObserver.java
-        │   │   │   └── UserSubject.java
-        │   │   └── Exception/              # Eccezioni custom
-        │   │       ├── CreazioneUtenteMalformataException.java
-        │   │       └── UtenteNonEsistenteException.java
-        │   └── resources/
-        │       ├── application.yaml
-        │       ├── seed.sql
-        │       ├── seed_mysql.sql
-        │       └── static/                 # Frontend (SPA)
-        │           ├── index.html
-        │           ├── css/
-        │           │   └── style.css
-        │           ├── js/
-        │           │   └── auth.js
-        │           └── img/
-        │               └── hero.gif
-        └── test/
-            └── java/com/example/final_project/
-                └── FinalProjectApplicationTests.java
-```
-
----
-
-## Configurazione PayPal
-
-Per far funzionare l'integrazione, è necessario configurare le credenziali sandbox/live nel file `application.yaml`:
-
-```yaml
-paypal:
-  client-id: ${PAYPAL_CLIENT_ID}
-  client-secret: ${PAYPAL_CLIENT_SECRET}
-  mode: sandbox # o 'live'
-  currency: EUR
-  return-url: http://localhost:8080/payment/success
-  cancel-url: http://localhost:8080/payment/cancel
-```
-
+## 📄 Licenza
+Questo progetto è distribuito sotto Licenza MIT. Consulta il file `LICENSE` per ulteriori dettagli.
