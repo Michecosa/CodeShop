@@ -96,6 +96,8 @@
                                     Profilo</a></li>
                             <li><a class="dropdown-item text-white" href="#" onclick="showOrders()"><i
                                         class="fas fa-history me-2"></i> Ordini</a></li>
+                            <li><a class="dropdown-item text-white d-none" href="#" id="admin-nav-item" onclick="showAdmin()">
+                                <i class="fas fa-shield-alt me-2"></i> Dashboard Admin </a></li>
                             <li>
                                 <hr class="dropdown-divider bg-secondary">
                             </li>
@@ -535,6 +537,53 @@
         </div>
     </div>
 
+    <!-- Admin Dashboard View -->
+    <div id="admin-view" class="container pt-5 d-none" style="margin-top: 80px; padding-bottom: 15rem;">
+        <div class="row mb-5 align-items-center">
+            <div class="col-md-8">
+                <h2 class="display-5 fw-bold">Dashboard <span class="text-gradient">Admin</span></h2>
+                <p class="text-white">Gestisci il catalogo prodotti del negozio</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <button class="btn btn-primary-custom px-4 w-auto" onclick="openProductModal()">
+                    <i class="fas fa-plus me-2"></i>Nuovo Prodotto
+                </button>
+            </div>
+        </div>
+
+        <div class="profile-section-card">
+            <div class="profile-section-header">
+                <i class="fas fa-box me-2 text-primary"></i>
+                <span id="admin-product-count-label">Catalogo Prodotti</span>
+            </div>
+            <div class="profile-section-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0" style="border-radius: 0;">
+                        <thead style="background: rgba(15,23,42,0.6);">
+                            <tr>
+                                <th class="text-muted small px-4" style="font-weight:700; letter-spacing:.06em;">ID</th>
+                                <th class="text-muted small" style="font-weight:700; letter-spacing:.06em;">NOME</th>
+                                <th class="text-muted small" style="font-weight:700; letter-spacing:.06em;">PREZZO</th>
+                                <th class="text-muted small" style="font-weight:700; letter-spacing:.06em;">STOCK</th>
+                                <th class="text-muted small" style="font-weight:700; letter-spacing:.06em;">DISPONIBILE</th>
+                                <th class="text-muted small" style="font-weight:700; letter-spacing:.06em;">CATEGORIE</th>
+                                <th class="text-muted small" style="font-weight:700; letter-spacing:.06em;">AZIONI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-products-body">
+                            <tr>
+                                <td colspan="7" class="text-center py-5">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div id="auth-view" class="container d-none pt-2" style="margin-top: 100px; padding-bottom: 15rem;">
         <div class="auth-container">
             <div class="auth-card">
@@ -692,7 +741,7 @@
 
     <script src="js/auth.js"></script>
     <script>
-        const allViews = ['home-view', 'shop-view', 'orders-view', 'profile-view', 'auth-view', 'contacts-view', 'chi-siamo-view'];
+        const allViews = ['home-view', 'shop-view', 'orders-view', 'profile-view', 'auth-view', 'contacts-view', 'chi-siamo-view', 'admin-view'];
 
         // Contacts view helper
         function showContacts() {
