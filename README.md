@@ -15,6 +15,7 @@
 - [Design Patterns](#design-patterns)
 - [Architettura del Progetto](#architettura-del-progetto)
 - [Installazione e Setup](#installazione-e-setup)
+- [🐳 Docker & Containerizzazione](#docker-containerizzazione)
 - [Configurazione](#configurazione)
 - [Team di Sviluppo](#team-di-sviluppo)
 
@@ -55,6 +56,7 @@
 | **Payments** | PayPal REST API SDK |
 | **Email** | Spring Mail (SMTP), HTML Templates |
 | **Frontend** | HTML5, CSS3 (Vanilla), JavaScript (ES6+) |
+| **Container** | Docker, Docker Compose |
 | **Build Tool** | Maven |
 
 ---
@@ -97,6 +99,7 @@ ProgettoFinale/
 - **JDK 21** o superiore
 - **MySQL 8.0+**
 - **Maven 3.8+**
+- **Docker & Docker Compose** (opzionale per esecuzione in container)
 
 ### Step 1: Clonare il repository
 ```bash
@@ -123,6 +126,101 @@ mvn clean install
 mvn spring-boot:run
 ```
 L'applicazione sarà disponibile all'indirizzo: `http://localhost:8080`
+
+---
+
+<a name="docker-containerizzazione"></a>
+## 🐳 Docker & Containerizzazione
+
+Il progetto è completamente containerizzato con Docker e Docker Compose, permettendo di avviare l'intero stack (App + Database) senza installare MySQL o Java localmente.
+
+### Prerequisiti
+- **Docker Desktop** installato e avviato
+- **Maven 3.8+** (solo per compilare il JAR)
+
+---
+
+### Passo 1 — Configura il file `.env`
+
+Copia `.env.example` in `.env` nella cartella principale (`ProgettoFinale/`) e compila i valori:
+
+```bash
+cp .env.example .env
+```
+
+> Se non hai una password per MySQL (es. XAMPP su Windows), lascia `DB_PASSWORD=` vuoto — funziona sia con password vuota che con una password impostata.
+
+---
+
+### Passo 2 — Compila il JAR
+
+```bash
+cd final_project
+./mvnw clean package -DskipTests   # Mac / Linux
+mvnw.cmd clean package -DskipTests  # Windows
+cd ..
+```
+
+---
+
+### Passo 3 — Avvia i container
+
+Dalla cartella `ProgettoFinale/`:
+
+```bash
+docker compose up --build -d
+```
+
+Docker avvierà prima il database e aspetterà che sia pronto, poi avvierà Spring Boot. Al primo avvio Hibernate crea automaticamente tutte le tabelle.
+
+---
+
+### Passo 4 — Carica i dati iniziali
+
+Dopo il primo avvio (necessario solo la prima volta, o dopo `docker compose down -v`):
+
+**Mac / Linux:**
+```bash
+docker exec -i mysql_db mysql -uroot final_project < init-data.sql
+# se hai impostato una password:
+docker exec -i mysql_db mysql -uroot -pTUAPASSWORD final_project < init-data.sql
+```
+
+**Windows PowerShell:**
+```powershell
+Get-Content init-data.sql | docker exec -i mysql_db mysql -uroot final_project
+# se hai impostato una password:
+Get-Content init-data.sql | docker exec -i mysql_db mysql -uroot -pTUAPASSWORD final_project
+```
+
+L'applicazione è ora disponibile su **http://localhost:8080**
+
+Account admin precaricato:
+| Campo | Valore |
+| :--- | :--- |
+| Username | `admin` |
+| Password | `miche` |
+| Email | `admin@codemarketplace.it` |
+
+---
+
+### Comandi utili
+
+| Comando | Descrizione |
+| :--- | :--- |
+| `docker compose up -d` | Avvia i container in background |
+| `docker compose down` | Ferma i container (i dati rimangono) |
+| `docker compose down -v` | Ferma e **cancella** il database |
+| `docker compose logs -f app-security` | Segui i log di Spring Boot in tempo reale |
+| `docker compose build --no-cache` | Ricostruisce l'immagine da zero |
+
+> **Attenzione**: `docker compose down -v` cancella tutti i dati del database. Dopo questo comando sarà necessario ripetere il Passo 4.
+
+---
+
+### Infrastruttura
+- **`mysql_db`**: MySQL 8.0 con healthcheck — Spring Boot aspetta che il DB sia pronto prima di partire.
+- **`spring_app`**: Immagine Alpine con JRE 21, porta `8080` esposta sull'host.
 
 ---
 
