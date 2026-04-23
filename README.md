@@ -5,7 +5,7 @@
 ![JWT](https://img.shields.io/badge/Security-JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
 ![PayPal](https://img.shields.io/badge/Payments-PayPal-003087?style=for-the-badge&logo=paypal&logoColor=white)
 
-**CodeShop** è una piattaforma e-commerce full-stack moderna dedicata alla vendita di prodotti digitali come snippet di codice, progetti software e database. Il sistema gestisce l'intero ciclo di vendita: dall'autenticazione sicura al checkout con PayPal, fino alla consegna automatizzata tramite email e area riservata.
+**CodeShop** rappresenta un ecosistema full-stack all'avanguardia concepito per rivoluzionare la vendita e la distribuzione di asset digitali. La piattaforma si distingue per un'architettura robusta che coniuga le prestazioni enterprise di **Spring Boot 3.x** e **Java 21** con un'interfaccia utente moderna basata su estetica **Glassomorphism** e navigazione fluida in modalità **SPA**. Grazie all'integrazione nativa con **PayPal REST API** e a un sistema di autenticazione stateless basato su **JWT**, il progetto garantisce transazioni sicure e un controllo granulare degli accessi. L'intero ciclo di vendita è completamente automatizzato attraverso l'implementazione del pattern **Observer**, che assicura la consegna istantanea dei prodotti tramite notifiche email e aree riservate, mentre la completa containerizzazione con **Docker** rende l'intera infrastruttura scalabile e pronta per il deployment immediato in ambienti di produzione.
 
 ---
 
@@ -36,8 +36,13 @@
 
 ### 📦 Delivery Digitale
 - **Download Automatico**: Al termine del pagamento, l'utente riceve istantaneamente un'email con il link di download.
-- **Area Riservata**: Storico ordini completo con pulsante "Scarica" per ogni prodotto acquistato.
+- **Area Riservata**: Storico ordini completo con pulsante "Scarica" per ogni prodotto acquistato (disponibile per 14 giorni).
 - **Notifiche Transazionali**: Sistema di notifiche via email per registrazione, ordini e sicurezza account.
+
+### 🛠️ Backoffice Amministrativo
+- **Gestione Catalogo (CRUD)**: Interfaccia dedicata per gli amministratori per aggiungere, modificare o rimuovere prodotti in tempo reale.
+- **Controllo Accessi Avanzato**: Visualizzazione completa degli ordini e dei file per la gestione operativa.
+- **Policy di Download**: Implementazione di restrizioni temporali (es. 14 giorni) per il download dei file da parte degli utenti, garantendo la sicurezza degli asset.
 
 ### 🎨 UI/UX
 - **Modern Design**: Interfaccia responsiva con effetti Glassomorphism e animazioni fluide.
