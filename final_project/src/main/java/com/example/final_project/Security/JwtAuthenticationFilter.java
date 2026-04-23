@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -51,17 +52,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null
 				&& jwtService.isTokenValid(jwt)) {
 
-			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+			try {
+				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-					userDetails,
-					null, // nessuna credenziale da conservare
-					userDetails.getAuthorities());
+				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+						userDetails,
+						null,
+						userDetails.getAuthorities());
 
-			authToken.setDetails(
-					new WebAuthenticationDetailsSource().buildDetails(request));
+				authToken.setDetails(
+						new WebAuthenticationDetailsSource().buildDetails(request));
 
-			SecurityContextHolder.getContext().setAuthentication(authToken);
+				SecurityContextHolder.getContext().setAuthentication(authToken);
+			} catch (UsernameNotFoundException e) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente non trovato");
+				return;
+			}
 		}
 
 		// 3) passa al filtro successivo
